@@ -103,6 +103,24 @@ export const ChatList = [
     },
     {
       type: "msg",
+      message: "Hi 👋 Panda, not bad, u ?",
+      incoming: false,
+      outgoing: true,
+    },
+    {
+      type: "msg",
+      message: "Hi 👋 Panda, not bad, u ?",
+      incoming: false,
+      outgoing: true,
+    },
+    {
+      type: "msg",
+      message: "Hi 👋 Panda, not bad, u ?",
+      incoming: false,
+      outgoing: true,
+    },
+    {
+      type: "msg",
       message: "Can you send me an abstarct image?",
       incoming: false,
       outgoing: true,
@@ -118,7 +136,7 @@ export const ChatList = [
       type: "msg",
       subtype: "img",
       message: "Here You Go",
-      img: faker.image.abstract(),
+      img: faker.image.urlLoremFlickr({ category: 'abstract' }),
       incoming: true,
       outgoing: false,
     },
@@ -139,7 +157,7 @@ export const ChatList = [
     {
       type: "msg",
       subtype: "link",
-      preview: faker.image.cats(),
+      preview: faker.image.urlLoremFlickr({ category: 'cats' }),
       message: "Yep, I can also do that",
       incoming: true,
       outgoing: false,

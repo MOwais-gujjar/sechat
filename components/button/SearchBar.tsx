@@ -3,14 +3,14 @@ import React from 'react';
 
 const SearchBar = () => {
   return (
-    <div className="relative left-0 flex items-center justify-center mx-auto border-gray-300 w-72 rounded-xl">
+      <div className=" relative">
       <input
         type="text"
         placeholder="Search..."
-        className="w-full py-2 pl-10 pr-4 rounded-xl border-t border-b border-r border-gray-300 focus:outline-none"
+        className="w-full px-4 py-2 text-sm text-white bg-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
       />
-      <Search aria-hidden="true" className=" absolute left-3 top-5 transform -translate-y-1/2 text-[#709CE6] hover:text-gray-700 " size={20}/>
-    </div>
+      <Search aria-hidden="true" className="absolute w-5 h-5 text-gray-400 right-3 top-2.5 " size={20}/>
+      </div>
   );
 };
 

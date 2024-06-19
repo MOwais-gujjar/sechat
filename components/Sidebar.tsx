@@ -43,8 +43,8 @@ const Sidebar = () => {
 
   const root = List();
   return (
-    <nav className=" sticky top-0 left-0 h-screen flex flex-col justify-between w-[100px] gap-y-2 bg-light-2 px-2 p-2 mx-auto max-sm:hidden lg:w-[60px]">
-      <h1 className=" pt-2 mx-auto font-extrabold text-xl">CH</h1>
+    <nav className=" sticky top-0 left-0 h-screen flex flex-col justify-between w-[100px] gap-y-2 bg-gray-900 px-2 p-2 mx-auto max-sm:hidden lg:w-[60px]">
+      <h1 className=" pt-2 mx-auto font-extrabold text-xl text-white">CH</h1>
       <div className=" absolute top-14 h-fit flex flex-col items-center">
         {root.map((route) => (
           <div className=" py-3" key={route.index}>
@@ -66,10 +66,10 @@ const Sidebar = () => {
               px-3
               py-2
               cursor-pointer
-             text-dark-2
+             text-light-1
              hover:text-sky-1
         `,
-                { "bg-blue-1 text-light-2 rounded-md mx-auto": isActive }
+                { "bg-gray-600 text-light-1 rounded-md mx-auto": isActive }
               )}
             >
               <Settings size={15} />
@@ -77,7 +77,7 @@ const Sidebar = () => {
           }
         </div>
       </div>
-      <div className=" flex flex-col items-center">
+      <div className=" flex flex-col items-center text-white">
         {/* Toggle */}
         <Switch />
         {/* User Profile */}

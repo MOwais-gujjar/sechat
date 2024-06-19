@@ -1,23 +1,42 @@
-import React from "react";
+"use client";
+import React, { useState } from "react";
+import Chat from "../Chat/Chat";
 import Chatheader from "../Chat/Chatheader";
-import ChatFooter from "../Chat/ChatFooter";
 import Message from "./Message";
+import Footer from "./Footer";
 
 const conversation = () => {
+  const [selectedUser, setSelectedUser] = useState(null);
+
+  const handleUserClick = (user: any) => {
+    setSelectedUser(user);
+  };
+  console.log(selectedUser)
   return (
-    <section className=" h-full max-h-[100vh] flex flex-col">
-      {/* Header */}
-      <header className=" h-20 w-full bg-[#F8FAFF] shadow-inner text-dark-2 p-4">
-         <Chatheader  />
-         </header>
-      {/* Message */}
-      <div className="flex flex-grow w-full "> 
-        <Message />
+    <section className=" h-full max-h-[100vh] flex bg-gray-800 text-white">
+      <div className=" bg-gray-800">
+        <Chat onUserClick={handleUserClick} />
       </div>
-      {/* Footer */}
-      <footer className=" w-full p-2 shadow-inner"> 
-        <ChatFooter />
-      </footer>
+      <div className=" w-[calc(1320px-420px)] bg-gray-900">
+        {selectedUser ? (
+          <div className="">
+            <header className=" w-full h-15 text-gray-400 shadow p-4">
+              <Chatheader
+                user={selectedUser}
+              />
+            </header>
+            {/* Message */}
+            <div className="grow ">
+              <Message />
+            </div>
+            <Footer />
+          </div>
+        ) : (
+          <div className="flex items-center justify-center h-screen text-white">
+            Select a user to start chatting
+          </div>
+        )}
+      </div>
     </section>
   );
 };

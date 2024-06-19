@@ -30,10 +30,10 @@ const DesktopMenu: React.FC<DesktopMenuProps> = ({ label, href, icons }) => {
         text-center
         text-sm 
         leading-2 
-        text-dark-2
+        text-white
         hover:text-sky-1
 `,
-          { "bg-blue-1 text-light-2 rounded-md py-3 px-3": isActive }
+          { "bg-gray-600 text-light-1 rounded-md py-3 px-3": isActive }
         )}
       >
         <div className=" shrink-0 w-4 h-4 px-auto py-auto">{icons}</div>
