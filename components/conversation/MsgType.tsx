@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
 import { Separator } from "@radix-ui/react-separator";
-import { Download, MedalIcon } from "lucide-react";
+import { Download, EllipsisVertical, MedalIcon } from "lucide-react";
 import Link from "next/link";
 import React from "react";
 
@@ -8,12 +8,10 @@ const ReplyType = ({ el }: any) => {
   return (
     <div
       className={cn(
-        `flex flex-col items-center justify-start gap-y-2`,
-        el.incoming ? " content-end" : "content-start "
+        `flex flex-col items-center content-center justify-start gap-y-2`,
+        el.incoming ? " self-end " : " self-start "
       )}
-    >
-      
-    </div>
+    ></div>
   );
 };
 
@@ -21,8 +19,8 @@ const DocType = ({ el }: any) => {
   return (
     <div
       className={cn(
-        `flex items-center w-44 gap-x-2 rounded-lg border border-gray-400 p-3`,
-        el.incoming ? " content-end" : "content-start "
+        `flex items-center content-center w-44 gap-x-2 rounded-lg border border-gray-400 p-3`,
+        el.incoming ? " self-end " : " self-start "
       )}
     >
       <MedalIcon size={20} className=" text-white mx-auto" />
@@ -36,8 +34,8 @@ const LinkType = ({ el }: any) => {
   return (
     <div
       className={cn(
-        `flex flex-col gap-y-1 border border-gray-400 m-3 rounded-lg w-fit p-3`,
-        el.incoming ? " content-end" : "content-start "
+        `flex content-center flex-col gap-y-1 border border-gray-400 m-3 rounded-lg w-fit p-3`,
+        el.incoming ? " self-end " : " self-start "
       )}
     >
       <img
@@ -49,7 +47,7 @@ const LinkType = ({ el }: any) => {
       />
       <h2 className=" text-xs">Chat App</h2>
       <Link href={"https://google.com"} className=" text-blue-1 underline">
-      <p className=" text-xs font-normal text-white">Google</p>
+        <p className=" text-xs font-normal text-white">Google</p>
       </Link>
     </div>
   );
@@ -59,8 +57,8 @@ const MediaType = ({ el }: any) => {
   return (
     <div
       className={cn(
-        `flex`,
-        el.incoming ? " content-end" : "content-start "
+        `flex content-center gap-y-3`,
+        el.incoming ? " self-end " : " self-start "
       )}
     >
       <img
@@ -78,18 +76,19 @@ const MsgType = ({ el }: any) => {
   return (
     <div
       className={cn(
-        `flex gap-3 gap-y-3`,
-        el.incoming ? " content-end" : "content-start "
+        `flex content-center gap-y-3`,
+        el.incoming ? " self-end " : " self-start "
       )}
     >
       <div
         className={cn(
-          " inline-block p-2 border border-gray-200 text-sm font-normal rounded-lg my-3 ",
+          " inline-block p-1 text-xs font-normal rounded-lg my-1 ",
           el.incoming ? "bg-blue-500 text-white" : "bg-gray-700 text-white"
         )}
       >
         {el.message}
       </div>
+      <EllipsisVertical size={17} />
     </div>
   );
 };

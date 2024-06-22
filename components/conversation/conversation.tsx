@@ -13,14 +13,14 @@ const conversation = () => {
   };
   console.log(selectedUser)
   return (
-    <section className=" h-full max-h-[100vh] flex bg-gray-800 text-white">
-      <div className=" bg-gray-800">
+    <section className=" max-h-[100vh] w-full flex bg-gray-800 text-white">
+      <div className=" h-full bg-gray-800">
         <Chat onUserClick={handleUserClick} />
       </div>
-      <div className=" w-[calc(1320px-420px)] bg-gray-900">
+      <div className=" 2xl:w-[calc(1536px-387px)] w-[calc(1320px-387px)]  bg-gray-900">
         {selectedUser ? (
           <div className="">
-            <header className=" w-full h-15 text-gray-400 shadow p-4">
+            <header className=" w-full h-15 text-gray-400 bg-gray-800">
               <Chatheader
                 user={selectedUser}
               />

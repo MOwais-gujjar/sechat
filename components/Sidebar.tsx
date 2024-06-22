@@ -1,11 +1,12 @@
 "use client";
 import React, { useState } from "react";
 import DesktopMenu from "./DesktopMenu";
-import { MessageCircleMore, User, Users, Settings, Phone } from "lucide-react";
+import { MessageCircleMore, User, Users, Settings, Phone, LogOut } from "lucide-react";
 import Switch from "./button/Switch";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
+import { faker } from "@faker-js/faker";
 const List = () => {
   const SidebarList = [
     {
@@ -35,6 +36,21 @@ const List = () => {
   ];
   return SidebarList;
 };
+
+const Profile_Menu = [
+  {
+    title: "Profile",
+    icon: <User />,
+  },
+  {
+    title: "Settings",
+    icon: <Settings />,
+  },
+  {
+    title: "Sign Out",
+    icon: <LogOut />,
+  },
+];
 
 const Sidebar = () => {
   const setting = "/setting";
@@ -78,10 +94,8 @@ const Sidebar = () => {
         </div>
       </div>
       <div className=" flex flex-col items-center text-white">
-        {/* Toggle */}
-        <Switch />
         {/* User Profile */}
-        <p>Login</p>
+        <img src={faker.image.avatar()} alt="login" className=" w-9 h-9 rounded-full object-cover" />
       </div>
     </nav>
   );

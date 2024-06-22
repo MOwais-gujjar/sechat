@@ -1,6 +1,6 @@
 import { faker } from "@faker-js/faker";
 
-export const ChatList = [
+const ChatList = [
     {
       id: 0,
       img: faker.image.avatar(),
@@ -84,7 +84,7 @@ export const ChatList = [
   ];
 
 // Chat History dummy data
-  export const Chat_History = [
+ const Chat_History = [
     {
       type: "msg",
       message: "Hi 👋🏻, How are ya ?",
@@ -172,3 +172,25 @@ export const ChatList = [
     },
   ];
   
+  const Message_options = [
+    {
+      title: "Reply",
+    },
+    {
+      title: "React to message",
+    },
+    {
+      title: "Forward message",
+    },
+    {
+      title: "Star message",
+    },
+    {
+      title: "Report",
+    },
+    {
+      title: "Delete Message",
+    },
+  ];
+  
+  export {Message_options, Chat_History, ChatList }
