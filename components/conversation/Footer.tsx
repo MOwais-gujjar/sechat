@@ -104,7 +104,7 @@ const Footer = () => {
     setOpenPicker((prev) => !prev);
   };
   return (
-    <div className="flex justify-center items-center space-x-2 px-2 py-1 h-full bg-gray-800">
+    <div className="flex items-center space-x-2 px-2 py-3 h-12 bg-gray-800">
       <div className=" relative left-0 flex items-center w-full ">
         <Input
           type="text"

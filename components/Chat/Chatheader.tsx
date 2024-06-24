@@ -1,16 +1,19 @@
+'use client'
+import { ToggleSidebar } from "@/redux/slice/app";
 import { faker } from "@faker-js/faker";
 import { EllipsisVertical, Phone, Video } from "lucide-react";
-import React from "react";
+import { useDispatch } from "react-redux";
 
 interface chatHeaderProps {
   user: any
 }
 
 const Chatheader: React.FC<chatHeaderProps> = ({ user}) => {
+  const dispatch = useDispatch()
   return (
     <>
       <div className="flex justify-between items-center px-3">
-        <div className="flex items-center space-x-1">
+        <div className="flex items-center space-x-1 cursor-pointer" onClick={() => dispatch(ToggleSidebar())}>
           {/* Image */}
           <img
             src={faker.image.avatar()}

@@ -9,7 +9,7 @@ import ChatBox from "./ChatBox";
 
 const Chat = ({ onUserClick }: any) => {
   return (
-    <section className=" relative bottom-0 w-72 h-full min-h-full bg-gray-800 rounded-s-md mx-auto text-light-2">
+    <section className=" relative bottom-0 w-72 h-full min-h-full bg-gray-800 rounded-s-md mx-auto text-light-1">
       <div className=" flex justify-between item-center px-5 pt-4">
         <h1 className=" text-lg font-bold  text-center">Chats</h1>
         <CircleDashed size={15} className=" mt-2" />
