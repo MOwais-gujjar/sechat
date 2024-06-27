@@ -1,9 +1,17 @@
-import React from 'react'
+import React from "react";
+import Calls from "./components/calls";
+import CallsDetail from "./components/callsDetail";
 
 const CallsPage = () => {
   return (
-    <div>CallsPage</div>
-  )
-}
+    <div className=" relative w-full h-full flex items-center space-x-3 m-0">
+      {/* Left Side */}
+      <Calls />
 
-export default CallsPage
+      {/* Right Side */}
+      <CallsDetail />
+    </div>
+  );
+};
+
+export default CallsPage;

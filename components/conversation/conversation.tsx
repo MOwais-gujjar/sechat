@@ -1,12 +1,14 @@
 "use client";
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
+import { cn } from "@/lib/utils";
+
 import Chat from "../Chat/Chat";
 import Chatheader from "../Chat/Chatheader";
 import Message from "./Message";
 import Footer from "./Footer";
 import Contact from "../settings/contact";
-import { useSelector } from "react-redux";
-import { cn } from "@/lib/utils";
+
 
 const conversation = () => {
   const { sidebar } = useSelector((store: any) => store.app);
