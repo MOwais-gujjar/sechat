@@ -21,22 +21,26 @@ const ChatElement: React.FC<ChatElementPrps> = ({
       <div className="flex item-center relative">
         {online ? (
           <>
-            <img
-              src={imgUrl}
-              alt={person}
-              className=" flex-shrink-0 w-9 h-9 rounded-full mr-1 ml-2 object-cover"
-            />
+            <div className=" mr-1 ml-2 border p-1 border-light-1 rounded-full">
+              <img
+                src={imgUrl}
+                alt={person}
+                className=" flex-shrink-0 w-9 h-8 rounded-full  object-cover"
+              />
+            </div>
             <span
               className={` absolute top-0 right-0 left-9 inline-block w-fit h-fit p-[6px] rounded-full ml-0 my-auto bg-green-700`}
               aria-hidden="true"
-             />
+            />
           </>
         ) : (
-          <img
-            src={imgUrl}
-            alt={person}
-            className=" flex-shrink-0 w-9 h-9 rounded-full mr-1 ml-2 object-cover"
-          />
+          <div className=" mr-1 ml-2 border p-1 border-light-1 rounded-full">
+            <img
+              src={imgUrl}
+              alt={person}
+              className=" flex-shrink-0 w-9 h-8 rounded-full  object-cover"
+            />
+          </div>
         )}
       </div>
 

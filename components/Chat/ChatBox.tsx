@@ -7,9 +7,9 @@ import { ScrollArea } from "@/components/ui/scroll-area"
 
 const ChatBox = ({ onUserClick }: any) => {
   return (
-    <ScrollArea className=" flex flex-col max-w-[280px] gap-y-3 mx-2 px-3 max-h-[450px]">
+    <ScrollArea className=" flex flex-col max-w-[280px] gap-y-3 mx-2 px-3 max-h-[430px]">
       <div className="flex flex-col space-y-2 ">
-        <h1 className=" text-[14px] font-semibold font-sans opacity-80">Pinned</h1>
+        <h1 className=" text-[12px] font-medium font-sans opacity-80 text-light-1/60">Pinned</h1>
         {ChatList.filter((ele) => ele.pinned).map((el) => (
           <div key={el.id} className=" flex flex-col mr-2" onClick={onUserClick}>
             <ChatElement

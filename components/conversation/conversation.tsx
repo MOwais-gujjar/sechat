@@ -8,7 +8,7 @@ import Chatheader from "../Chat/Chatheader";
 import Message from "./Message";
 import Footer from "./Footer";
 import Contact from "../settings/contact";
-
+import Image from "next/image";
 
 const conversation = () => {
   const { sidebar } = useSelector((store: any) => store.app);
@@ -17,9 +17,8 @@ const conversation = () => {
   const handleUserClick = (user: any) => {
     setSelectedUser(user);
   };
-  console.log(selectedUser);
   return (
-    <section className=" max-h-[100vh] w-full flex bg-gray-800 text-white">
+    <section className=" max-h-full w-full flex bg-gray-800 text-white">
       <div className=" h-full m-0 bg-gray-800">
         <Chat onUserClick={handleUserClick} />
       </div>
@@ -46,8 +45,9 @@ const conversation = () => {
             <Footer />
           </>
         ) : (
-          <div className="flex items-center justify-center h-screen text-white">
-            Select a user to start chatting
+          <div className="flex flex-col gap-y-3 items-center justify-center h-screen text-white">
+            <Image src={'/icons/gift.gif'} alt="Chat Gif" width={300} height={300} />
+            <p className=""> Select a user to start chatting</p>
           </div>
         )}
       </div>

@@ -10,7 +10,7 @@ import SearchBar from "../button/SearchBar";
 import GroupChatElement from "./GroupChatElement";
 import CreateGroup from "@/components/main/CreateGroup";
 
-const GroupChat = () => {
+const GroupChat = ({onUserClick}: any) => {
   const [openDialog, setOpenDialog] = useState(false);
 
   const CloseDialog = () => {
@@ -24,11 +24,11 @@ const GroupChat = () => {
           handleClose={() => setOpenDialog(false)}
         />
       )}
-      <div className=" fixed top-0 w-72 h-full bg-gray-600 flex flex-col items-center border-r border-gray-400">
+      <div className=" fixed top-0 w-72 h-full bg-dark-1/70 flex flex-col items-center border-r border-gray-700">
         <div className=" flex  items-center gap-x-36 py-2">
-          <h1 className=" text-base font-medium"> Group</h1>
+          <h1 className=" text-base font-medium">Group</h1>
           <div
-            className=" text-[10px] font-light"
+            className=" text-[10px] font-light cursor-pointer"
             onClick={() => setOpenDialog(true)}
           >
             <Scaling size={18} />
@@ -43,7 +43,7 @@ const GroupChat = () => {
           <div className=" felx flex-col gap-y-4 my-2 items-start ">
             <h1 className=" text-sm font-medium mx-3"> Pinned Group </h1>
             {ChatList.filter((ele) => ele.pinned).map((el) => (
-              <div key={el.id} className=" flex flex-col gap-y-10 mx-5 my-2">
+              <div key={el.id} className=" flex flex-col gap-y-10 mx-5 my-2" onClick={onUserClick}>
                 <GroupChatElement
                   imgUrl={el.img}
                   person={el.name}
@@ -59,7 +59,7 @@ const GroupChat = () => {
           <div className=" felx flex-col gap-y-4 my-2 items-start ">
             <h1 className=" text-sm font-medium mx-3"> All Groups </h1>
             {ChatList.filter((ele) => !ele.pinned).map((el) => (
-              <div key={el.id} className=" flex flex-col gap-y-10 mx-5 my-2">
+              <div key={el.id} className=" flex flex-col gap-y-10 mx-5 my-2" onClick={onUserClick}>
                 <GroupChatElement
                   imgUrl={el.img}
                   person={el.name}

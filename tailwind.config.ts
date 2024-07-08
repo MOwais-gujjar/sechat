@@ -20,8 +20,9 @@ const config = {
     extend: {
       colors: {
         dark: {
-          1: "#838383",
-          2: "#131313"
+          1: "#323133",
+          2: "#131217",
+          3: "#1c1c21"
         },
         light: {
           1: "#F0F4FA",
@@ -30,9 +31,14 @@ const config = {
         blue: {
           1: "#6B8AFD"
         },
-        sky: {
-          1: '#B5BAC8'
-        }
+        icon: {
+          1: '#605455',
+          2: "#e6e2e1"
+        },
+        text: {
+          1: '#2f92ef',
+          2: "#e94d5f"
+        },
       },
       keyframes: {
         "accordion-down": {

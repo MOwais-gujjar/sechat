@@ -4,7 +4,7 @@ import { Search, SmileIcon } from "lucide-react"
 
 export function InputWithButton() {
   return (
-    <div className="relative left-0 flex w-full max-w-sm items-center space-x-2">
+    <div className="relative left-0 flex w-full max-w-sm items-center space-x-2 text-white">
       <Input type="text" placeholder="Write message...." />
       <Button type="submit">Send</Button>
       <SmileIcon

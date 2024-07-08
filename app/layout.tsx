@@ -18,11 +18,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className=" bg-gray-900 text-gray-100">
-      {/* <ClerkProvider> */}
+      <ClerkProvider>
       <body className={inter.className}>
         <ReduxProvider>{children}</ReduxProvider>
       </body>
-      {/* </ClerkProvider> */}
+      </ClerkProvider>
     </html>
   );
 }

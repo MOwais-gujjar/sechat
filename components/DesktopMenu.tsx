@@ -26,17 +26,19 @@ const DesktopMenu: React.FC<DesktopMenuProps> = ({ label, href, icons }) => {
         justify-center
         mx-auto
         px-3
-        py-2
+        py-3
         text-center
         text-sm 
         leading-2 
         text-white
-        hover:text-sky-1
+        rounded-md
+        hover:bg-dark-3
+        hover:text-light-1
 `,
-          { "bg-gray-600 text-light-1 rounded-md py-3 px-3": isActive }
+          { "bg-dark-1 text-icon-2 rounded-md py-3 px-3": isActive }
         )}
       >
-        <div className=" shrink-0 w-4 h-4 px-auto py-auto">{icons}</div>
+        <div className=" shrink-0 w-4 h-4 px-auto py-auto text-icon-2">{icons}</div>
         <span className=" sr-only"> {label} </span>
       </Link>
     </>
