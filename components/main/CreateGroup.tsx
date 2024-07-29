@@ -5,13 +5,25 @@ import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import Model from "../Model";
 import Input from "../Hooks-form/Input/Input";
 import Select from "../Hooks-form/Input/Select";
-import { usersList } from "@/constant";
-import { Id } from "@/convex/_generated/dataModel";
-import { ImageIcon } from "lucide-react";
-import Image from "next/image";
-import { api } from "@/convex/_generated/api";
-import { useQuery } from "convex/react";
-import { getUser } from "@/convex/users";
+
+const users = [
+  {
+    id: 0,
+    name: "Akhter",
+  },
+  {
+    id: 1,
+    name: "Tayyab",
+  },
+  {
+    id: 2,
+    name: "Salman",
+  },
+  {
+    id: 4,
+    name: "Asim",
+  }
+]
 
 interface createGroupProps {
   open?: boolean;
@@ -143,19 +155,17 @@ export default function CreateGroup({ open, handleClose }: createGroupProps) {
                 errors={errors}
                 placeHolder="Group Name"
               />
-              <Select
-                disabled={isLoading}
-                label={members}
-                option={usersList.map((user) => ({
-                  value: user.id,
-                  label: user.name,
-                }))}
-                onChange={(value) =>
-                  setValue("members", value, {
-                    shouldValidate: true,
-                  })
-                }
-                value={members}
+              <Select 
+              disabled={isLoading}
+              label={members}
+              option={users.map((user) => ({
+                value: user.id,
+                label: user.name
+              }))}
+              onChange={(value) => setValue('members', value, {
+                shouldValidate: true
+              })}
+              value={members}
               />
             </div>
           </div>
