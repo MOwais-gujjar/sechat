@@ -15,11 +15,13 @@ const Chatheader: React.FC<chatHeaderProps> = ({ user}) => {
       <div className="flex justify-between items-center px-3">
         <div className="flex items-center space-x-1 cursor-pointer" onClick={() => dispatch(ToggleSidebar())}>
           {/* Image */}
+          <div className=" border border-light-1 p-1 rounded-full">
           <img
             src={faker.image.avatar()}
             alt="Image"
             className="w-8 h-8 flex-shrink-0 rounded-full"
           />
+          </div>
           {/* Name */}
           <div className=" flex flex-col items-start py-2 px-2">
             <span className="text-xs font-medium">{ faker.person.fullName()}</span>
@@ -31,8 +33,8 @@ const Chatheader: React.FC<chatHeaderProps> = ({ user}) => {
         </div>
         <div className=" flex items-center gap-x-5">
           {/* Voice Call */}
-          <Phone size={17} />
-          <Video size={17} />
+          <Phone size={22} className=" text-green-400/70 cursor-pointer duration-300 hover:bg-icon-1/70 bg-icon-1 p-1 rounded-sm" />
+          <Video size={22} className=" text-green-400/70 cursor-pointer duration-300 hover:bg-icon-1/70 bg-icon-1 p-1 rounded-sm" />
           <EllipsisVertical size={17} />
         </div>
       </div>

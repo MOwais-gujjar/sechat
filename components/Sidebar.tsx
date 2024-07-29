@@ -1,12 +1,10 @@
 "use client";
-import React, { useState } from "react";
 import DesktopMenu from "./DesktopMenu";
-import { MessageCircleMore, User, Users, Settings, Phone, LogOut } from "lucide-react";
-import Switch from "./button/Switch";
+import { MessageCircleMore, Users, Settings, Phone, LogOutIcon } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
-import { faker } from "@faker-js/faker";
+import { SignOutButton, SignedOut } from "@clerk/nextjs";
 const List = () => {
   const SidebarList = [
     {
@@ -17,18 +15,12 @@ const List = () => {
     },
     {
       index: 1,
-      label: "People",
-      href: "/people",
-      icon: <User size={15} />,
-    },
-    {
-      index: 2,
       label: "Calls",
       href: "/calls",
       icon: <Phone size={15} />,
     },
     {
-      index: 3,
+      index: 2,
       label: "Groups",
       href: "/groupchat",
       icon: <Users size={15} />,
@@ -37,21 +29,6 @@ const List = () => {
   return SidebarList;
 };
 
-const Profile_Menu = [
-  {
-    title: "Profile",
-    icon: <User />,
-  },
-  {
-    title: "Settings",
-    icon: <Settings />,
-  },
-  {
-    title: "Sign Out",
-    icon: <LogOut />,
-  },
-];
-
 const Sidebar = () => {
   const setting = "/setting";
   const pathname = usePathname();
@@ -59,8 +36,8 @@ const Sidebar = () => {
 
   const root = List();
   return (
-    <nav className=" sticky top-0 left-0 h-screen flex flex-col justify-between w-[100px] gap-y-2 bg-gray-900 px-2 p-2 mx-auto max-sm:hidden lg:w-[60px]">
-      <h1 className=" pt-2 mx-auto font-extrabold text-xl text-white">CH</h1>
+    <nav className=" sticky top-0 left-0 flex flex-col justify-between w-[100px] gap-y-2 bg-dark-2 px-2 p-2 mx-auto max-sm:hidden md:w-[60px]">
+      <h1 className=" pt-2 mx-auto font-extrabold text-xl text-icon-2">CH</h1>
       <div className=" absolute top-14 h-fit flex flex-col items-center">
         {root.map((route) => (
           <div className=" py-3" key={route.index}>
@@ -85,7 +62,7 @@ const Sidebar = () => {
              text-light-1
              hover:text-sky-1
         `,
-                { "bg-gray-600 text-light-1 rounded-md mx-auto": isActive }
+                { "bg-dark-1 hover:bg-dark-3 text-light-1 rounded-md mx-auto": isActive }
               )}
             >
               <Settings size={15} />
@@ -93,9 +70,10 @@ const Sidebar = () => {
           }
         </div>
       </div>
-      <div className=" flex flex-col items-center text-white">
-        {/* User Profile */}
-        <img src={faker.image.avatar()} alt="login" className=" w-9 h-9 rounded-full object-cover" />
+      <div className=" mx-auto">
+      <SignOutButton>
+        <LogOutIcon size={18}/>
+      </SignOutButton>
       </div>
     </nav>
   );

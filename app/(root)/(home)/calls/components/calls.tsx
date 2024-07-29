@@ -1,64 +1,43 @@
 "use client";
-
-import { useState } from "react";
-import { Plus, Scaling } from "lucide-react";
-import { Separator } from "@/components/ui/separator";
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
-import { CallList } from "@/constant";
-import CreateGroup from "@/components/main/CreateGroup";
-import SearchBar from "@/components/button/SearchBar";
-import CallElement from "./CallElement";
+import { ChatList } from "@/constant";
+import React, { useState } from "react";
+import CallsList from "./callsList";
+import Image from "next/image";
+import Sidebar from "@/components/Sidebar";
+import { cn } from "@/lib/utils";
+import CallsDetail from "./callsDetail";
 
 const Calls = () => {
-  const [openDialog, setOpenDialog] = useState(false);
+  const [selectedUser, setSelectedUser] = useState(null);
 
-  const CloseDialog = () => {
-    setOpenDialog(false);
+  const handleUserClick = (user: any) => {
+    setSelectedUser(user);
   };
   return (
-    <>
-      {openDialog && (
-        <CreateGroup
-          open={openDialog}
-          handleClose={() => setOpenDialog(false)}
-        />
-      )}
-      <div className=" fixed top-0 w-72 h-full bg-gray-600 flex flex-col items-center border-r border-gray-400">
-      <h1 className=" text-lg font-medium self-start mx-2 my-2">Calls Log</h1>
-        <div className=" py-2 mx-1">
-          <SearchBar />
-        </div>
-        <div className=" flex items-center justify-between py-4 mx-2">
-        <h1 className=" text-xs font-normal">Start Conversation</h1>
-          <div
-            className=" text-[10px] font-light bg-gray-500 text-light-1 rounded-full p-1 "
-            onClick={() => setOpenDialog(true)}
-          >
-            <Plus size={15} />
-          </div>
-        </div>
-        <Separator className="w-full rounded-md bg-gray-500" />
-        <ScrollArea>
-          {/* Pinned groups */}
-          <div className=" felx flex-col gap-y-4 my-2 items-start ">
-            <h1 className=" text-sm font-medium mx-3"> Pinned Group </h1>
-            {CallList.map((el) => (
-              <div key={el.id} className=" flex flex-col gap-y-10 mx-5 my-2">
-                <CallElement
-                  id={el.id}
-                  imgUrl={el.img}
-                  name={el.name}
-                  incoming={el.incoming}
-                  online={el.online}
-                  missed={el.missed}
-                />
-              </div>
-            ))}
-          </div>
-          <ScrollBar orientation="vertical" />
-        </ScrollArea>
+    <section className=" max-h-full flex text-white">
+      <div className="">
+        <CallsList onUserClick={handleUserClick} />
       </div>
-    </>
+      <div
+        className={cn(
+          " relative left-72 max-w-full w-[calc(100%-288px)] 2xl:w-[calc(1536px-288px)]"
+        )}
+      >
+        {selectedUser ? (
+          <CallsDetail />
+        ) : (
+          <div className="flex flex-col gap-y-3 items-center justify-center h-screen text-white">
+            <Image
+              src={"/icons/gift.gif"}
+              alt="Chat Gif"
+              width={300}
+              height={300}
+            />
+            <p className=""> Select a user to start chatting</p>
+          </div>
+        )}
+      </div>
+    </section>
   );
 };
 

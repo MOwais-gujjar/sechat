@@ -5,7 +5,7 @@ import { DocType, LinkType, MediaType, MsgType, ReplyType, Timeline } from "./Ms
 
 const Message = ({ user }: any) => {
   return (
-    <ScrollArea className=" w-full max-w-full snap-always h-[495px]">
+    <ScrollArea className=" w-full max-w-full snap-always h-[490px]">
       <div className="flex flex-col px-3 py-1  ">
         {Chat_History.map((el) => {
           switch (el.type) {

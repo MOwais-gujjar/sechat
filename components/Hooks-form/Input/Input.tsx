@@ -9,6 +9,7 @@ import { cn } from '@/lib/utils';
 
 interface InputProps {
     label: string,
+    placeHolder: string,
     id: string,
     type?: string,
     required?: boolean,
@@ -20,6 +21,7 @@ const Input: React.FC<InputProps> = (
     {
         label,
         id,
+        placeHolder,
         type,
         required,
         register,
@@ -40,7 +42,7 @@ const Input: React.FC<InputProps> = (
         type={type} 
         autoComplete={id} 
         disabled={Disabled} 
-        placeholder='Group Name'
+        placeholder={placeHolder}
         {...register(id, {required})}
         className={cn(`
         block

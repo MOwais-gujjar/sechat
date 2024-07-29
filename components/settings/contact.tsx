@@ -4,7 +4,7 @@ import { Button } from "../ui/button";
 import { useDispatch } from "react-redux";
 import { ToggleSidebar } from "@/redux/slice/app";
 import { ScrollArea } from "../ui/scroll-area";
-import { faker, fakerAR } from "@faker-js/faker";
+import { faker } from "@faker-js/faker";
 import { Avatar, AvatarImage } from "../ui/avatar";
 import { Separator } from "../ui/separator";
 import { Switch } from "@/components/ui/switch";
@@ -21,7 +21,7 @@ const Contact = () => {
         </Button>
       </div>
       {/* User Profile Info */}
-      <ScrollArea className=" flex flex-col gap-y-2 items-center">
+      <ScrollArea className=" flex flex-col gap-y-2 items-center max-h-[540px]">
         <div className="flex items-center justify-center mx-auto gap-x-2 py-2">
           <Avatar className=" w-14 h-14 ml-3">
             <AvatarImage src={faker.image.avatar()} alt="user Image" />

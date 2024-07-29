@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@clerk/clerk-sdk-node": "^5.0.18",
     "@clerk/nextjs": "^5.1.6",
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
@@ -27,8 +28,10 @@
     "@reduxjs/toolkit": "^2.2.5",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
+    "convex": "^1.13.2",
     "emoji-mart": "^5.6.0",
     "emoji-picker-react": "^4.10.0",
+    "gun": "^0.2020.1240",
     "lucide-react": "^0.381.0",
     "next": "14.2.3",
     "react": "^18",
@@ -39,6 +42,7 @@
     "redux": "^5.0.1",
     "redux-persist": "^6.0.0",
     "styled-components": "^6.1.11",
+    "svix": "^1.25.0",
     "tailwind-merge": "^2.3.0",
     "tailwindcss-animate": "^1.0.7",
     "yup": "^1.4.0"

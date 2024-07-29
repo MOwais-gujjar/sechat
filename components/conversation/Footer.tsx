@@ -10,7 +10,6 @@ import {
   User,
 } from "lucide-react";
 import { Button } from "../ui/button";
-import EmojiPicker from "emoji-picker-react";
 import { Theme } from "emoji-picker-react";
 import dynamic from "next/dynamic";
 import { cn } from "@/lib/utils";
@@ -61,14 +60,12 @@ const yToClassMap: any = {
   "-215px": "top-[-215px]",
   "-260px": "top-[-260px]",
 };
-// Predefined background color classes
 const bgColorClasses: any = {
   "#4da5fe": "bg-blue-500",
   "#1b8cfe": "bg-cyan-500",
   "#0172e4": "bg-indigo-500",
   "#0159b2": "bg-purple-500",
   "#013f7f": "bg-gray-500",
-  // Add more as needed
 };
 
 const Picker = dynamic(
@@ -111,7 +108,7 @@ const Footer = () => {
           value={newMessage}
           onChange={(e) => setNewMessage(e.target.value)}
           placeholder="Type a message..."
-          className=" placeholder:absolute placeholder:left-10 placeholder:right-10 mx-auto flex-grow border border-gray-600 rounded-lg text-dark-2 pl-10 bg-transparent outline-none"
+          className="  mx-auto flex-grow border placeholder:text-light-2 border-gray-600 rounded-lg text-light-2 pl-10 bg-transparent outline-none"
         />
         <div
           className={cn(
