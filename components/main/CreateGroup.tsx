@@ -5,6 +5,8 @@ import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import Model from "../Model";
 import Input from "../Hooks-form/Input/Input";
 import Select from "../Hooks-form/Input/Select";
+import Image from "next/image";
+import { ImageIcon } from "lucide-react";
 
 const users = [
   {

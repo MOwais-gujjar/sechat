@@ -19,19 +19,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className=" bg-gray-900 text-gray-100">
-<<<<<<< HEAD
-=======
-      <ClerkProvider>
->>>>>>> 64128c0cc990f297636df45721804704d4b9dadc
       <body className={inter.className}>
         <ConvexClientProvider>
         <ReduxProvider>{children}</ReduxProvider>
         </ConvexClientProvider>
       </body>
-<<<<<<< HEAD
-=======
-      </ClerkProvider>
->>>>>>> 64128c0cc990f297636df45721804704d4b9dadc
     </html>
   );
 }
