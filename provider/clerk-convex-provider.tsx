@@ -1,34 +1,32 @@
 "use client";
 
-import { ClerkProvider, useAuth } from "@clerk/nextjs";
-import { ConvexReactClient } from "convex/react";
+import { FC, ReactNode } from "react";
+import { ClerkProvider, useAuth, SignInButton } from "@clerk/clerk-react";
 import { ConvexProviderWithClerk } from "convex/react-clerk";
-import { ReactNode } from "react";
+import {
+  Authenticated,
+  ConvexReactClient,
+  Unauthenticated,
+} from "convex/react";
 
-const convex = new ConvexReactClient(process.env.NEXT_PUBLIC_CONVEX_URL!);
+const CONVEX_URL = process.env.NEXT_PUBLIC_CONVEX_URL!;
+const CLERK_PUBLISHABLE_KEY = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY!;
+if(!CLERK_PUBLISHABLE_KEY){
+    console.log("Publishable key not exist ");
+}
+const convex = new ConvexReactClient(CONVEX_URL);
 
-export function ConvexClientProvider({ children }: { children: ReactNode }) {
+const ConvexClientProvider: FC<{ children: ReactNode }> = ({ children }) => {
   return (
-    <ClerkProvider
-      publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}
-      appearance={{
-        layout: {
-          logoImageUrl: "/icons/ArchiveBox.svg",
-          socialButtonsVariant: "iconButton",
-        },
-        variables: {
-          colorText: "#fff",
-          colorPrimary: "#0E78F9",
-          colorBackground: "#1c1f2e",
-          colorInputBackground: "#252a41",
-          colorInputText: "#fff",
-        },
-      }}
-    >
+    <ClerkProvider publishableKey={CLERK_PUBLISHABLE_KEY}>
       <ConvexProviderWithClerk client={convex} useAuth={useAuth}>
-        {children}
+        <Authenticated>{children}</Authenticated>
+        <Unauthenticated>
+          <SignInButton />
+        </Unauthenticated>
       </ConvexProviderWithClerk>
-      ;
     </ClerkProvider>
   );
-}
+};
+
+export default ConvexClientProvider;

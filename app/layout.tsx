@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { ClerkProvider } from "@clerk/nextjs";
 import ReduxProvider from "@/components/ReduxProvider";
-import { ConvexClientProvider } from "@/provider/clerk-convex-provider";
+import ConvexClientProvider from "@/provider/clerk-convex-provider";
 
 const inter = Inter({ subsets: ["latin"] });
 

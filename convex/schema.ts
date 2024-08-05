@@ -1,19 +1,14 @@
-import { defineSchema, defineTable } from "convex/server";
-import { v } from "convex/values";
+import { defineSchema, defineTable } from 'convex/server';
+import { v } from 'convex/values';
 
 export default defineSchema({
-	users: defineTable({
-		name: v.optional(v.string()),
-		email: v.string(),
-		image: v.string(),
-		tokenIdentifier: v.string(),
-		isOnline: v.boolean(),
-	}).index("by_tokenIdentifier", ["tokenIdentifier"]),
-    conversations: defineTable({
-		participants: v.array(v.id("users")),
-		isGroup: v.boolean(),
-		GroupName: v.optional(v.string()),
-		GroupImage: v.optional(v.string()),
-		Admin: v.optional(v.id("users")),
-	}),
-});
+  users: defineTable({
+    username: v.string(),
+    status: v.string(),
+    email: v.string(),
+    imageUrl: v.string(),
+    clerkId: v.string(),
+  })
+    .index('by_email', ['email'])
+    .index('by_clerkId', ['clerkId']),
+})

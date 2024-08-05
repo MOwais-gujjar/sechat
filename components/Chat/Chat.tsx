@@ -1,15 +1,24 @@
 "use client";
+
 import { MessageSquareDiff } from "lucide-react";
 import React, { useState } from "react";
 import SearchBar from "../button/SearchBar";
 import ChatBox from "./ChatBox";
 import { faker } from "@faker-js/faker";
-import { SignInButton, UserButton } from "@clerk/nextjs";
+import { SignInButton, UserButton, useUser } from "@clerk/nextjs";
 import CreateChat from "../main/createChat";
+import { useQuery } from "convex/react";
+import { api } from "@/convex/_generated/api";
 
 
 const Chat = ({ onUserClick }: any) => {
   const [openDialog, setOpenDialog] = useState(false);
+
+const {user} = useUser();
+
+const users = useQuery(api.status.get, {
+  clerkId: user?.id as string
+});
 
   const CloseDialog = () => {
     setOpenDialog(false);
@@ -26,18 +35,18 @@ const Chat = ({ onUserClick }: any) => {
         <div className=" flex justify-between items-center mx-5 py-2 text-light-2">
           {/* User Profile */}
           <div className=" flex items-center gap-x-2">
-            <div className=" w-9 h-9 object-cover rounded-full">
+            <div className=" w-9 h-9 object-cover rounded-full mt-2">
               <SignInButton>
                 <UserButton />
               </SignInButton>
             </div>
 
-            <div className=" flex flex-col items-center">
+            <div className=" mx-auto my-auto gap-2">
               <h1 className="text-sm font-medium text-light-2 self-start">
-                Name
+                {users?.username}
               </h1>
               <p className=" text-[10px] text-light-1/60 font-normal ml-1 self-start">
-                {faker.person.jobTitle()}
+                {users?.status}
               </p>
             </div>
           </div>
