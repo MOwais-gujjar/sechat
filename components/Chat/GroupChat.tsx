@@ -9,14 +9,8 @@ import { ChatList } from "@/constant";
 import SearchBar from "../button/SearchBar";
 import GroupChatElement from "./GroupChatElement";
 import CreateGroup from "@/components/main/CreateGroup";
-
-<<<<<<< HEAD
-const GroupChat = ({ onUserClick }: any) => {
-=======
-const GroupChat = ({onUserClick}: any) => {
->>>>>>> 64128c0cc990f297636df45721804704d4b9dadc
-  const [openDialog, setOpenDialog] = useState(false);
-
+const GroupChat = ({onUserClick} : any) =>{
+  const [openDialog, setOpenDialog] = useState(false)
   const CloseDialog = () => {
     setOpenDialog(false);
   };
@@ -42,7 +36,6 @@ const GroupChat = ({onUserClick}: any) => {
           <SearchBar />
         </div>
         <Separator className="w-full rounded-md bg-gray-500" />
-<<<<<<< HEAD
         <div className=" flex flex-col mx-2 py-3">
           <h1 className=" text-sm font-medium"> All Groups </h1>
           <ScrollArea className=" max-h-[460px]">
@@ -67,7 +60,6 @@ const GroupChat = ({onUserClick}: any) => {
             <ScrollBar orientation="vertical" />
           </ScrollArea>
         </div>
-=======
         <ScrollArea>
           {/* Pinned groups */}
           <div className=" felx flex-col gap-y-4 my-2 items-start ">
@@ -103,7 +95,6 @@ const GroupChat = ({onUserClick}: any) => {
           </div>
           <ScrollBar orientation="vertical" />
         </ScrollArea>
->>>>>>> 64128c0cc990f297636df45721804704d4b9dadc
       </div>
     </>
   );

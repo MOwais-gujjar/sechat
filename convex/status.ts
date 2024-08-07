@@ -1,33 +1,28 @@
+// import { ConvexError, v } from 'convex/values';
 import { ConvexError, v } from 'convex/values';
 import { mutation, query } from './_generated/server';
 
-export const get = query({
-  args: {
-    clerkId: v.string(),
-  },
-  async handler(ctx, { clerkId }) {
-    const user = await ctx.db
-      .query('users')
-      .withIndex('by_clerkId', q => q.eq('clerkId', clerkId))
-      .unique();
+export const getUsers = query({
+	args: {},
+	handler: async (ctx, args) => {
+		const identity = await ctx.auth.getUserIdentity();
+		if (!identity) {
+			throw new ConvexError("Unauthorized");
+		}
 
-    if (!user) {
-      throw new ConvexError('User not found');
-    }
-
-    return user;
-  },
+		const users = await ctx.db.query("users").collect();
+		return users.filter((user) => user.tokenIdentifier !== identity.tokenIdentifier);
+	},
 });
-
 export const update = mutation({
   args: {
-    clerkId: v.string(),
+    tokenIdentifier: v.string(),
     status: v.string(),
   },
-  async handler(ctx, { clerkId, status }) {
+  async handler(ctx, { tokenIdentifier, status }) {
     const user = await ctx.db
       .query('users')
-      .withIndex('by_clerkId', q => q.eq('clerkId', clerkId))
+      .withIndex('by_tokenIdentifier', q => q.eq('tokenIdentifier', tokenIdentifier))
       .unique();
 
     if (!user) {
@@ -39,3 +34,4 @@ export const update = mutation({
     return { success: true };
   },
 });
+

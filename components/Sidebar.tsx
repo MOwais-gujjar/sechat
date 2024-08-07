@@ -1,10 +1,29 @@
 "use client";
-import DesktopMenu from "./DesktopMenu";
-import { MessageCircleMore, Users, Settings, Phone, LogOutIcon } from "lucide-react";
-import { usePathname } from "next/navigation";
+
+import { usePathname, useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
+import { SignOutButton } from "@clerk/nextjs";
+
+import {
+  MessageCircleMore,
+  Users,
+  Settings,
+  Phone,
+  LogOutIcon,
+} from "lucide-react";
+
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { NavigationMenu } from "@/components/ui/navigation-menu";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+
+import DesktopMenu from "./DesktopMenu";
+import SettingPage from "@/app/(root)/(home)/setting/page";
 import Link from "next/link";
-import { SignOutButton, SignedOut } from "@clerk/nextjs";
 const List = () => {
   const SidebarList = [
     {
@@ -30,9 +49,8 @@ const List = () => {
 };
 
 const Sidebar = () => {
-  const setting = "/setting";
   const pathname = usePathname();
-  const isActive = pathname === setting;
+  const isActive = pathname === "/setting";
 
   const root = List();
   return (
@@ -53,7 +71,7 @@ const Sidebar = () => {
           <div className=" w-10 h-1 rounded-md bg-dark-1 " />
           {
             <Link
-              href={setting}
+              href={"/setting"}
               className={cn(
                 `
               px-3
@@ -62,18 +80,35 @@ const Sidebar = () => {
              text-light-1
              hover:text-sky-1
         `,
-                { "bg-dark-1 hover:bg-dark-3 text-light-1 rounded-md mx-auto": isActive }
+                {
+                  "bg-dark-1 hover:bg-dark-3 text-light-1 rounded-md mx-auto":
+                    isActive,
+                }
               )}
             >
-              <Settings size={15} />
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Settings size={15} />
+                </TooltipTrigger>
+                <TooltipContent className=" bg-black opacity-70 text-light-1 ml-3 ">
+                  setting
+                </TooltipContent>
+              </Tooltip>
             </Link>
           }
         </div>
       </div>
-      <div className=" mx-auto">
-      <SignOutButton>
-        <LogOutIcon size={18}/>
-      </SignOutButton>
+      <div className=" mx-auto cursor-pointer">
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <SignOutButton>
+              <LogOutIcon size={18} />
+            </SignOutButton>
+          </TooltipTrigger>
+          <TooltipContent className=" bg-black opacity-70 text-light-1 ml-3 ">
+            logout
+          </TooltipContent>
+        </Tooltip>
       </div>
     </nav>
   );

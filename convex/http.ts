@@ -1,69 +1,64 @@
-import { httpRouter } from 'convex/server';
-import { httpAction } from './_generated/server';
-import { Webhook } from 'svix';
-import { internal } from './_generated/api';
-
-const validatePayload = async (req: Request): Promise<any> => {
-  const svixHeaders = {
-    'svix-id': req.headers.get('svix-id')!,
-    'svix-signature': req.headers.get('svix-signature')!,
-    'svix-timestamp': req.headers.get('svix-timestamp')!,
-  };
-
-  const payload = await req.text();
-
-  const webhook = new Webhook(process.env.CLERK_WEBHOOK_SECRET!);
-
-  try {
-    return webhook.verify(payload, svixHeaders);
-  } catch (error) {
-    console.error('Error validating webhook payload', error);
-    return;
-  }
-};
-
-const handler = httpAction(async (ctx, req) => {
-  const event = await validatePayload(req);
-
-  if (!event) {
-    return new Response('Invalid webhook payload', { status: 400 });
-  }
-
-  switch (event.type) {
-    case 'user.created':
-      const user = await ctx.runQuery(internal.user.get, {
-        clerkId: event.data.id,
-      });
-
-      if (user) {
-        console.log(`Updating user ${event.data.id} with new data`);
-      }
-    case 'user.updated':
-      console.log(event.data);
-      console.log(`Updating user ${event.data.id} with new data`);
-
-      await ctx.runMutation(internal.user.create, {
-        username: `${event.data.first_name} ${event.data.last_name}`,
-        status: `Just came onboard! 🚀`,
-        email: event.data.email_addresses[0].email_address,
-        imageUrl: event.data.image_url,
-        clerkId: event.data.id,
-      });
-
-      break;
-    default:
-      console.log('Unhandled webhook event', event.type);
-  }
-
-  return new Response('Webhook processed', { status: 200 });
-});
+import { httpRouter } from "convex/server";
+import { httpAction } from "./_generated/server";
+import { internal } from "./_generated/api";
 
 const http = httpRouter();
 
 http.route({
-  path: '/clerk',
-  method: 'POST',
-  handler,
+  path: "/clerk",
+  method: "POST",
+  handler: httpAction(async (ctx, req) => {
+    const payloadString = await req.text();
+    const headerPayload = req.headers;
+
+    try {
+      const result = await ctx.runAction(internal.clerk.fulfill, {
+        payload: payloadString,
+        headers: {
+          "svix-id": headerPayload.get("svix-id")!,
+          "svix-signature": headerPayload.get("svix-signature")!,
+          "svix-timestamp": headerPayload.get("svix-timestamp")!,
+        },
+      });
+
+      switch (result.type) {
+        case "user.created":
+          await ctx.runMutation(internal.users.createUser, {
+            tokenIdentifier: `${process.env.CLERK_APP_DOMAIN}|${result.data.id}`,
+            email: result.data.email_addresses[0]?.email_address,
+            username: `${result.data.first_name ?? "Guest"}  ${result.data.last_name ?? ""}`,
+            status: "Come Back",
+            imageUrl: result.data.image_url,
+          });
+          break;
+        case "user.updated":
+          await ctx.runMutation(internal.users.updateUser, {
+            tokenIdentifier: `${process.env.CLERK_APP_DOMAIN}|${result.data.id}`,
+            imageUrl: result.data.image_url,
+          });
+          break;
+        case "session.created":
+          await ctx.runMutation(internal.users.setUserOnline, {
+            tokenIdentifier: `${process.env.CLERK_APP_DOMAIN}|${result.data.user_id}`,
+          });
+          break;
+        case "session.ended":
+          await ctx.runMutation(internal.users.setUserOffline, {
+            tokenIdentifier: `${process.env.CLERK_APP_DOMAIN}|${result.data.user_id}`,
+          });
+          break;
+      }
+
+      return new Response(null, {
+        status: 200,
+      });
+    } catch (error) {
+      console.log("Webhook Error🔥🔥", error);
+      return new Response("Webhook Error", {
+        status: 400,
+      });
+    }
+  }),
 });
 
 export default http;

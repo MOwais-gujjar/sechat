@@ -10,15 +10,12 @@ import CreateChat from "../main/createChat";
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 
-
 const Chat = ({ onUserClick }: any) => {
   const [openDialog, setOpenDialog] = useState(false);
 
-const {user} = useUser();
+  const { user } = useUser();
 
-const users = useQuery(api.status.get, {
-  clerkId: user?.id as string
-});
+  const users = useQuery(api.status.getUsers || "skip");
 
   const CloseDialog = () => {
     setOpenDialog(false);
@@ -41,16 +38,23 @@ const users = useQuery(api.status.get, {
               </SignInButton>
             </div>
 
-            <div className=" mx-auto my-auto gap-2">
-              <h1 className="text-sm font-medium text-light-2 self-start">
-                {users?.username}
-              </h1>
-              <p className=" text-[10px] text-light-1/60 font-normal ml-1 self-start">
-                {users?.status}
-              </p>
-            </div>
+            {users?.map((el) => (
+              <div className=" mx-auto my-auto gap-2">
+                <h1 className="text-sm font-medium text-light-2 self-start">
+                  {" "}
+                  {el.username}{" "}
+                </h1>
+                <p className=" text-[10px] text-light-1/60 font-normal ml-1 self-start">
+                  {user?.emailAddresses[0].emailAddress}
+                </p>
+              </div>
+            ))}
           </div>
-          <MessageSquareDiff size={20} className=" mt-2 text-light-1 cursor-pointer" onClick={() => setOpenDialog(true)} />
+          <MessageSquareDiff
+            size={20}
+            className=" mt-2 text-light-1 cursor-pointer"
+            onClick={() => setOpenDialog(true)}
+          />
         </div>
         {/* Search bar */}
         <div className=" flex flex-col item-center justify-center mx-4 py-2 ">
@@ -58,7 +62,7 @@ const users = useQuery(api.status.get, {
         </div>
         {/* Message Box */}
         <div className="w-[290px]">
-        <ChatBox onUserClick={onUserClick}  />
+          <ChatBox onUserClick={onUserClick} />
         </div>
       </section>
     </>

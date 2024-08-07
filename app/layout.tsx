@@ -3,6 +3,8 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import ReduxProvider from "@/components/ReduxProvider";
 import ConvexClientProvider from "@/provider/clerk-convex-provider";
+import { TooltipProvider } from "@/components/ui/tooltip";
+import { Toaster } from "@/components/ui/sonner";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,7 +22,11 @@ export default function RootLayout({
     <html lang="en" className=" bg-gray-900 text-gray-100">
       <body className={inter.className}>
         <ConvexClientProvider>
-        <ReduxProvider>{children}</ReduxProvider>
+          <ReduxProvider>
+            <TooltipProvider>{children}
+              <Toaster />
+            </TooltipProvider>
+          </ReduxProvider>
         </ConvexClientProvider>
       </body>
     </html>

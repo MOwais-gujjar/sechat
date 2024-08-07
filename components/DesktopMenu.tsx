@@ -1,9 +1,15 @@
 "use client";
 
-import { cn } from "@/lib/utils";
 import Link from "next/link";
+import { cn } from "@/lib/utils";
 import { usePathname } from "next/navigation";
-import React from "react";
+
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+
 
 interface DesktopMenuProps {
   label: string;
@@ -16,10 +22,11 @@ const DesktopMenu: React.FC<DesktopMenuProps> = ({ label, href, icons }) => {
   const isActive = pathname === href || pathname.startsWith(`${href}/`);
   return (
     <>
-      <Link
-        href={href}
-        className={cn(
-          `
+      <Tooltip>
+        <Link
+          href={href}
+          className={cn(
+            `
         group 
         flex
         flex-col
@@ -35,12 +42,17 @@ const DesktopMenu: React.FC<DesktopMenuProps> = ({ label, href, icons }) => {
         hover:bg-dark-3
         hover:text-light-1
 `,
-          { "bg-dark-1 text-icon-2 rounded-md py-3 px-3": isActive }
-        )}
-      >
-        <div className=" shrink-0 w-4 h-4 px-auto py-auto text-icon-2">{icons}</div>
-        <span className=" sr-only"> {label} </span>
-      </Link>
+            { "bg-dark-1 text-icon-2 rounded-md py-3 px-3": isActive }
+          )}
+        >
+            <TooltipTrigger asChild>
+                {icons}
+            </TooltipTrigger>
+            <TooltipContent className=" bg-black opacity-70 text-light-1 ml-3 ">
+              {label}
+            </TooltipContent>
+        </Link>
+      </Tooltip>
     </>
   );
 };
