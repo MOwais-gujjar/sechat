@@ -1,0 +1,181 @@
+import { ConvexError, v } from "convex/values";
+import { mutation } from "./_generated/server";
+import { getUserDataById } from "./_utils";
+
+export const create = mutation({
+  args: {
+    email: v.string(),
+  },
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) {
+      throw new ConvexError("Not authenticated");
+    }
+    if (args.email === identity.email) {
+      throw new ConvexError("Cannot send friend request to your friend");
+    }
+    const currentUser = await getUserDataById({
+      ctx,
+      clerkId: identity.subject,
+    });
+    if (!currentUser) {
+      throw new ConvexError("User not found !");
+    }
+    const receiver = await ctx.db
+      .query("users")
+      .withIndex("by_email", (q) => q.eq("email", args.email))
+      .unique();
+    if (!receiver) {
+      throw new ConvexError("Receiver not Found!");
+    }
+
+    const requestAlreadyExists = await ctx.db
+      .query("friend_requests")
+      .withIndex("by_receiver_sender", (q) =>
+        q.eq("receiver", receiver._id).eq("sender", currentUser._id)
+      )
+      .unique();
+    if (requestAlreadyExists) {
+      throw new ConvexError("Request Already Exist");
+    }
+    const requestAlreadyReceived = await ctx.db
+      .query("friend_requests")
+      .withIndex("by_receiver_sender", (q) =>
+        q.eq("receiver", currentUser._id).eq("sender", receiver._id)
+      )
+      .unique();
+    if (requestAlreadyReceived) {
+      throw new ConvexError("Request Already Received");
+    }
+    const contact1 = await ctx.db
+      .query("contact")
+      .withIndex("by_user1", (q) => q.eq("user1", currentUser._id))
+      .collect();
+
+    const contact2 = await ctx.db
+      .query("contact")
+      .withIndex("by_user2", (q) => q.eq("user2", currentUser._id))
+      .collect();
+
+    if (
+      contact1.some((contact) => contact.user2 === receiver._id) ||
+      contact2.some((contact) => contact.user1 === receiver._id)
+    ) {
+      throw new ConvexError(` Already Friends + ${receiver.email}`);
+    }
+
+    const request = await ctx.db.insert("friend_requests", {
+      sender: currentUser._id,
+      receiver: receiver._id,
+    });
+    return request;
+  },
+});
+
+export const decline = mutation({
+  args: {
+    id: v.id("friend_requests"),
+  },
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) {
+      throw new ConvexError("Not authenticated");
+    }
+    const currentUser = await getUserDataById({
+      ctx,
+      clerkId: identity.subject,
+    });
+    if (!currentUser) {
+      throw new ConvexError("User not found !");
+    }
+    const currentFriendRequest = await ctx.db.get(args.id);
+    if (
+      !currentFriendRequest ||
+      currentFriendRequest.receiver !== currentUser._id
+    ) {
+      throw new ConvexError("Invalid Friend Request ! ");
+    }
+    await ctx.db.delete(args.id)
+  },
+});
+
+
+export const accept = mutation({
+    args: {
+      id: v.id("friend_requests"),
+    },
+    handler: async (ctx, args) => {
+      const identity = await ctx.auth.getUserIdentity();
+      if (!identity) {
+        throw new ConvexError("Not authenticated");
+      }
+      const currentUser = await getUserDataById({
+        ctx,
+        clerkId: identity.subject,
+      });
+      if (!currentUser) {
+        throw new ConvexError("User not found !");
+      }
+      const currentFriendRequest = await ctx.db.get(args.id);
+      if (
+        !currentFriendRequest ||
+        currentFriendRequest.receiver !== currentUser._id
+      ) {
+        throw new ConvexError("Invalid Friend Request ! ");
+      }
+      const conversationId = await ctx.db.insert('conversations', {
+        isGroup: false
+      })
+      await ctx.db.insert('contact', {
+        user1: currentUser._id,
+        user2: currentFriendRequest.sender,
+        conversationId
+      })
+      await ctx.db.insert('conversation_members', {
+        memberId: currentUser._id,
+        conversationId
+      })
+
+      await ctx.db.insert('conversation_members', {
+        memberId: currentFriendRequest.sender,
+        conversationId
+      })
+      await ctx.db.delete(currentFriendRequest._id)
+    },
+  });
+
+import { query } from "./_generated/server";
+
+export const get = query({
+  args: {},
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+
+    if (!identity) {
+      throw new ConvexError("Not Authenticated");
+    }
+
+    const currentUser = await getUserDataById({
+      ctx,
+      clerkId: identity.subject,
+    });
+
+    if (!currentUser) {
+      throw new ConvexError("user Not Found!");
+    }
+    const friendRequests = await ctx.db
+      .query("friend_requests")
+      .withIndex("by_receiver", (q) => q.eq("receiver", currentUser._id))
+      .collect();
+    const requestWithSender = await Promise.all(
+      friendRequests.map(async (friendRequest) => {
+        const sender = await ctx.db.get(friendRequest.sender);
+        if (!sender) {
+          throw new ConvexError(" Sender Not Found!");
+        }
+        return { ...friendRequest, sender };
+      })
+    );
+    return requestWithSender
+  },
+});

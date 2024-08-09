@@ -28,6 +28,7 @@ http.route({
             email: result.data.email_addresses[0]?.email_address,
             username: `${result.data.first_name ?? "Guest"}  ${result.data.last_name ?? ""}`,
             status: "Come Back",
+            clerkId: result.data.id,
             imageUrl: result.data.image_url,
           });
           break;

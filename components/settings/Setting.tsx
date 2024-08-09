@@ -1,39 +1,23 @@
 "use client";
 
 import { useState } from "react";
-
 import z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { UserButton, useUser } from "@clerk/nextjs";
+import { useMutation, useQuery } from "convex/react";
+import { api } from "@/convex/_generated/api";
+import { useMutationHandler } from "@/hooks/use-Mutation-Handler";
+import { ConvexError } from "convex/values";
+import { fetchQuery } from "convex/nextjs";
 
-import { cn } from "@/lib/utils";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import {
-  Drawer,
-  DrawerClose,
-  DrawerContent,
-  DrawerDescription,
-  DrawerFooter,
-  DrawerHeader,
-  DrawerTitle,
-  DrawerTrigger,
-} from "@/components/ui/drawer";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useForm } from "react-hook-form";
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
-import { UserButton, useUser } from "@clerk/nextjs";
-import { useQuery } from "convex/react";
-import { api } from "@/convex/_generated/api";
-import { Handshake, LaptopMinimal, Pencil, Sun, SunMoon, UserRound, UserRoundSearch } from "lucide-react";
-import { Separator } from "../ui/separator";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Separator } from "@/components/ui/separator";
 import {
   Form,
   FormControl,
@@ -41,14 +25,24 @@ import {
   FormField,
   FormItem,
   FormLabel,
-} from "../ui/form";
-import { Badge } from "../ui/badge";
-import { Textarea } from "../ui/textarea";
-import { ToggleGroup, ToggleGroupItem } from "../ui/toggle-group";
-import { useMutationHandler } from "@/hooks/use-Mutation-Handler";
-import { mutation } from "@/convex/_generated/server";
-import { toast } from "sonner";
-import { ConvexError } from "convex/values";
+} from "@/components/ui/form";
+import { Badge } from "@/components/ui/badge";
+import { Textarea } from "@/components/ui/textarea";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+
+import {
+  Handshake,
+  LaptopMinimal,
+  Loader2,
+  Pencil,
+  Sun,
+  SunMoon,
+  UserRound,
+  UserRoundSearch,
+} from "lucide-react";
+import { ScrollArea } from "../ui/scroll-area";
+import FriendRequestCard from "../FriendRequestCard";
+import { getUserDataById } from "@/convex/_utils";
 
 const statuses = [
   "👋 Speak Freely",
@@ -68,10 +62,17 @@ export function Setting() {
   const [updateStatusDialog, setUpdateStatusDialog] = useState(false);
   const [status, setStatus] = useState("");
   const [friendReqestModal, setFriendRequestModal] = useState(false);
+  // const users = useQuery(api.status.getUsers || "skip");
 
-  const users = useQuery(api.status.getUsers || "skip");
+  const user = useQuery(api.users.getMe || "skip");
 
-  const { useMutate: updateStatus, state: updateStatusState} = useMutationHandler(api.status.update)
+  const { useMutate: updateStatus, state: updateStatusState } =
+    useMutationHandler(api.status.update);
+
+  const { useMutate: createFriendRequest, state: createFriendRequestState } =
+    useMutationHandler(api.friend_request.create);
+
+  const friendRequests = useQuery(api.friend_request.get);
 
   const form = useForm<z.infer<typeof addFriendFormSchema>>({
     resolver: zodResolver(addFriendFormSchema),
@@ -83,32 +84,33 @@ export function Setting() {
   async function friendRequestHandler({
     email,
   }: z.infer<typeof addFriendFormSchema>) {
-    /*
     try {
       await createFriendRequest({ email });
       form.reset();
-      toast.success('Friend request sent successfully');
+      toast.success("Friend request sent successfully");
       setFriendRequestModal(false);
     } catch (error) {
       toast.error(
-        error instanceof ConvexError ? error.data : 'An error occurred'
+        error instanceof ConvexError ? error.data : "An error occurred"
       );
-      console.log('Error sending friend request:', error);
+      console.log("Error sending friend request:", error);
     }
-       */
   }
 
   async function updateStatusHandler() {
     try {
-      await updateStatus({ tokenIdentifier: users?.map(el => el.tokenIdentifier), status });
-      toast.success('Status updated successfully');
-      setStatus('');
+      await updateStatus({
+        tokenIdentifier: user?.tokenIdentifier,
+        status,
+      });
+      toast.success("Status updated successfully");
+      setStatus("");
       setUpdateStatusDialog(false);
     } catch (error) {
       toast.error(
-        error instanceof ConvexError ? error.data : 'An error occurred'
+        error instanceof ConvexError ? error.data : "An error occurred"
       );
-      console.log('Error updating status', error);
+      console.log("Error updating status", error);
     }
   }
 
@@ -116,188 +118,186 @@ export function Setting() {
     <>
       <h1 className=" text-lg font-semibold text-light-1"> Profile </h1>
       <div className=" flex flex-col items-start mx-2 py-2 ">
-        {users?.map((user) => (
-          <div className=" flex flex-col items-start mx-auto space-y-4">
-            <Avatar className="h-20 w-20 mx-auto">
-              <AvatarImage src={user.imageUrl} />
-              <AvatarFallback>{user?.username[0]}</AvatarFallback>
-            </Avatar>
-            <div className="flex items-center space-x-2">
-              <UserRound />
-              <Input
-                disabled
-                placeholder="Name"
-                value={user?.username}
-                className="border-none outline-none ring-0"
-              />
-            </div>
-            <Separator className=" opacity-10" />
-            <div className="flex items-center justify-center space-x-5">
-              <p>Manage your account</p>
-              <UserButton
-                appearance={{
-                  elements: {
-                    userButtonPopoverCard: {
-                      pointerEvents: "initial",
-                    },
-                  },
-                }}
-              />
-            </div>
-            <Separator className=" opacity-10" />
-            <Dialog
-              open={friendReqestModal}
-              onOpenChange={() => setFriendRequestModal(!friendReqestModal)}
-            >
-              <DialogTrigger>
-                <div className="flex items-center space-x-2">
-                  <UserRoundSearch />
-                  <p>Send friend request</p>
-                </div>
-              </DialogTrigger>
-              <DialogContent>
-                <Form {...form}>
-                  <form
-                    onSubmit={form.handleSubmit(friendRequestHandler)}
-                    className="space-y-8"
-                  >
-                    <FormField
-                      control={form.control}
-                      name="email"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Email</FormLabel>
-                          <FormControl>
-                            <Input
-                              disabled
-                              placeholder="friend@email.com"
-                              {...field}
-                            />
-                          </FormControl>
-                          <FormDescription>
-                            Enter your frien&apos;s email to send a friend
-                            request
-                          </FormDescription>
-                          {/* <FormMessage /> */}
-                          hello
-                        </FormItem>
-                      )}
-                    />
-
-                    <Button disabled type="submit">
-                      Submit
-                    </Button>
-                  </form>
-                </Form>
-              </DialogContent>
-            </Dialog>
-            <Separator className=" opacity-10" />
-            <Dialog>
-              <DialogTrigger>
-                <div className="flex items-center space-x-2">
-                  <Handshake />
-                  <p>View friend requests</p>
-
-                  <Badge variant="default">badge</Badge>
-                </div>
-              </DialogTrigger>
-
-              <DialogContent>
-                {/* {friendRequests ? (
-              friendRequests.length === 0 ? (
-                <p className='text-xl text-center font-bold'>
-                  No friend request yet
-                </p>
-              ) : (
-                <ScrollArea className='h-[400px] rounded-md'>
-                  {friendRequests.map(request => (
-                    <FriendRequestCard
-                      key={request.sender._id}
-                      email={request.sender.email}
-                      id={request._id}
-                      imageUrl={request.sender.imageUrl}
-                      username={request.sender.username}
-                    />
-                  ))}
-                </ScrollArea>
-              )
-            ) : (
-              <Loader2 />
-            )} */}
-                <p className="text-xl text-center font-bold">
-                  No friend request yet
-                </p>
-              </DialogContent>
-            </Dialog>
-            <Separator className=" opacity-10" />
-            <Dialog
-              open={updateStatusDialog}
-              onOpenChange={() => setUpdateStatusDialog(!updateStatusDialog)}
-            >
-              <DialogTrigger>
-                <div className="flex items-center space-x-2">
-                  <Pencil />
-                  <p>{user?.status}</p>
-                </div>
-              </DialogTrigger>
-              <DialogContent>
-                <Textarea
-                  placeholder={status}
-                  className="resize-none h-48 bg-gray-800"
-                  value={status}
-                  onChange={(e) => setStatus(e.target.value)}
-                  disabled={updateStatusState === 'loading'}
-                />
-                <div>
-                  {statuses.map((status) => (
-                    <p
-                      key={status}
-                      className="px-2 py-3 bg-gray-800 hover:bg-dark-1 hover:text-light-1 dark:hover:bg-gray-700 rounded-md cursor-pointer"
-                      onClick={() => setStatus(status)}
-                    >
-                      {status}
-                    </p>
-                  ))}
-                </div>
-                <Button
-                  onClick={updateStatusHandler}
-                  className="ml-auto w-fit bg-blue-1"
-                  disabled={updateStatusState === 'loading'}
-                  type="button"
-                >
-                  Update status
-                </Button>
-              </DialogContent>
-            </Dialog>
-            <Separator className=" opacity-10" />
-            <ToggleGroup type='single' variant='outline'>
-          <ToggleGroupItem
-            // onClick={() => setTheme('light')}
-            value='light'
-            className='flex space-x-3'
-          >
-            <Sun />
-            <p>Light</p>
-          </ToggleGroupItem>
-          <ToggleGroupItem
-            // onClick={() => setTheme('dark')}
-            value='dark'
-            className='flex space-x-3'
-          >
-            <SunMoon />
-            <p>Dark</p>
-          </ToggleGroupItem>
-          <ToggleGroupItem
-            // onClick={() => setTheme('system')}
-            value='system'
-            className='flex space-x-3'
-          >
-            <LaptopMinimal />
-            <p>System</p>
-          </ToggleGroupItem>
-        </ToggleGroup>
+        <div className=" flex flex-col items-start mx-auto space-y-4">
+          <Avatar className="h-20 w-20 mx-auto">
+            <AvatarImage src={user?.imageUrl} />
+            <AvatarFallback>{user?.username[0]}</AvatarFallback>
+          </Avatar>
+          <div className="flex items-center space-x-2">
+            <UserRound />
+            <Input
+              disabled
+              placeholder="Name"
+              value={user?.username}
+              className="border-none outline-none ring-0"
+            />
           </div>
-        ))}
+          <Separator className=" opacity-10" />
+          <div className="flex items-center justify-center space-x-5">
+            <p>Manage your account</p>
+            <UserButton
+              appearance={{
+                elements: {
+                  userButtonPopoverCard: {
+                    pointerEvents: "initial",
+                  },
+                },
+              }}
+            />
+          </div>
+          <Separator className=" opacity-10" />
+          <Dialog
+            open={friendReqestModal}
+            onOpenChange={() => setFriendRequestModal(!friendReqestModal)}
+          >
+            <DialogTrigger>
+              <div className="flex items-center space-x-2">
+                <UserRoundSearch />
+                <p>Send friend request</p>
+              </div>
+            </DialogTrigger>
+            <DialogContent>
+              <Form {...form}>
+                <form
+                  onSubmit={form.handleSubmit(friendRequestHandler)}
+                  className="space-y-8"
+                >
+                  <FormField
+                    control={form.control}
+                    name="email"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Email</FormLabel>
+                        <FormControl>
+                          <Input
+                            disabled={
+                              createFriendRequestState === 'loading'
+                            }
+                            placeholder="friend@email.com"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormDescription>
+                          Enter your frien&apos;s email to send a friend request
+                        </FormDescription>
+                        {/* <FormMessage /> */}
+                        hello
+                      </FormItem>
+                    )}
+                  />
+
+                  <Button disabled={
+                    createFriendRequestState === 'loading'
+                  } variant={"secondary"} type="submit">
+                    Submit
+                  </Button>
+                </form>
+              </Form>
+            </DialogContent>
+          </Dialog>
+          <Separator className=" opacity-10" />
+          <Dialog>
+            <DialogTrigger>
+              <div className="flex items-center space-x-2">
+                <Handshake />
+                <p>View friend requests</p>
+
+                <Badge variant="default">{friendRequests?.length}</Badge>
+              </div>
+            </DialogTrigger>
+
+            <DialogContent>
+              {friendRequests ? (
+                friendRequests.length === 0 ? (
+                  <p className="text-xl text-center font-bold">
+                    No friend request yet
+                  </p>
+                ) : (
+                  <ScrollArea className="h-[400px] rounded-md">
+                    {friendRequests.map((request) => (
+                      <FriendRequestCard
+                        key={request.sender._id}
+                        email={request.sender.email}
+                        id={request._id}
+                        imageUrl={request.sender.imageUrl}
+                        username={request.sender.username}
+                      />
+                    ))}
+                  </ScrollArea>
+                )
+              ) : (
+                <Loader2 />
+              )}
+            </DialogContent>
+          </Dialog>
+          <Separator className=" opacity-10" />
+          <Dialog
+            open={updateStatusDialog}
+            onOpenChange={() => setUpdateStatusDialog(!updateStatusDialog)}
+          >
+            <DialogTrigger>
+              <div className="flex items-center space-x-2">
+                <Pencil />
+                <p>{user?.status}</p>
+              </div>
+            </DialogTrigger>
+            <DialogContent>
+              <Textarea
+                placeholder={status}
+                className="resize-none h-48 bg-gray-800"
+                value={status}
+                onChange={(e) => setStatus(e.target.value)}
+                disabled={updateStatusState === "loading"}
+              />
+              <div>
+                {statuses.map((status) => (
+                  <p
+                    key={status}
+                    className="px-2 py-3 bg-gray-800 hover:bg-dark-1 hover:text-light-1 dark:hover:bg-gray-700 rounded-md cursor-pointer"
+                    onClick={() => setStatus(status)}
+                  >
+                    {status}
+                  </p>
+                ))}
+              </div>
+              <Button
+                onClick={updateStatusHandler}
+                className="ml-auto w-fit bg-blue-1"
+                disabled={updateStatusState === "loading"}
+                type="button"
+              >
+                Update status
+              </Button>
+            </DialogContent>
+          </Dialog>
+          <Separator className=" opacity-10" />
+          <ToggleGroup type="single" variant="outline">
+            <ToggleGroupItem
+              // onClick={() => setTheme('light')}
+              value="light"
+              className="flex space-x-3"
+            >
+              <Sun />
+              <p>Light</p>
+            </ToggleGroupItem>
+            <ToggleGroupItem
+              // onClick={() => setTheme('dark')}
+              value="dark"
+              className="flex space-x-3"
+            >
+              <SunMoon />
+              <p>Dark</p>
+            </ToggleGroupItem>
+            <ToggleGroupItem
+              // onClick={() => setTheme('system')}
+              value="system"
+              className="flex space-x-3"
+            >
+              <LaptopMinimal />
+              <p>System</p>
+            </ToggleGroupItem>
+          </ToggleGroup>
+        </div>
       </div>
     </>
   );
