@@ -4,8 +4,6 @@ import { MessageSquareDiff } from "lucide-react";
 import React, { useState } from "react";
 import SearchBar from "../button/SearchBar";
 import ChatBox from "./ChatBox";
-import { faker } from "@faker-js/faker";
-import { SignInButton, UserButton, useUser } from "@clerk/nextjs";
 import CreateChat from "../main/createChat";
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
@@ -14,9 +12,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 const Chat = ({ onUserClick }: any) => {
   const [openDialog, setOpenDialog] = useState(false);
 
-  const { user } = useUser();
-
-  const users = useQuery(api.users.getMe || "skip");
+  const user = useQuery(api.users.getMe || "skip");
 
   const CloseDialog = () => {
     setOpenDialog(false);
@@ -42,7 +38,7 @@ const Chat = ({ onUserClick }: any) => {
                     {user?.username}
                   </h1>
                   <p className=" text-[10px] text-light-1/60 font-normal self-start">
-                    {user?.emailAddresses[0].emailAddress}
+                    {user?.email}
                   </p>
                 </div>
               </div>

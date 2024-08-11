@@ -36,12 +36,6 @@ const List = () => {
       href: "/calls",
       icon: <Phone size={15} />,
     },
-    {
-      index: 2,
-      label: "Groups",
-      href: "/groupchat",
-      icon: <Users size={15} />,
-    },
   ];
   return SidebarList;
 };

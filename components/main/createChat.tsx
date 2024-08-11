@@ -1,13 +1,17 @@
-import { Button } from "@/components/ui/button";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+
+import Model from "@/components/Model";
+import Input from "@/components/Hooks-form/Input/Input";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
-import Model from "../Model";
-import Input from "../Hooks-form/Input/Input";
-import { Search, UserRound, UserRoundPlus } from "lucide-react";
+
+import { Group, Search, UserRoundPlus, Users } from "lucide-react";
 import { ConversationList } from "@/constant";
-import Image from "next/image";
-import { ScrollArea, ScrollBar } from "../ui/scroll-area";
+
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import { Button } from "@/components/ui/button";
+import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
+import CreateGroup from "./CreateGroup";
 
 interface createGroupProps {
   open?: boolean;
@@ -18,6 +22,11 @@ export default function CreateChat({ open, handleClose }: createGroupProps) {
   const router = useRouter();
 
   const [isLoading, setIsLoading] = useState(false);
+
+  const [openDialog, setOpenDialog] = useState(false)
+  const CloseDialog = () => {
+    setOpenDialog(true);
+  };
 
   const {
     register,
@@ -41,19 +50,34 @@ export default function CreateChat({ open, handleClose }: createGroupProps) {
     }
   };
   return (
-    <Model open={open} onClose={handleClose}>
+    <>
+    {openDialog && (
+        <CreateGroup
+          open={openDialog}
+          handleClose={() => setOpenDialog(false)}
+        />
+      )}
+     <Model open={open} onClose={handleClose}>
       <form
         onSubmit={handleSubmit(onSubmit)}
         className=" w-96 flex flex-col justify-center items-center"
       >
         <div className=" space-y-6">
           <div className=" border-b border-gray-900/10 pb-12">
-            <h2 className=" text-base font-semibold leading-7 text-light-1">
-              Let's Start Chat
-            </h2>
+            <div className=" flex items-center justify-between gap-x-4 py-5">
+              <h2 className=" text-base font-semibold leading-7 text-light-1">
+                Let's Start Chat
+              </h2>
+              <Tooltip>
+                <TooltipTrigger><Users size={18} onClick={() => setOpenDialog(true)}/></TooltipTrigger>
+                <TooltipContent className=" bg-transparent outline text-light-1 text-sm outline-white">New Group</TooltipContent>
+              </Tooltip>
+            </div>
+
             <p className=" mt-1 text-sm leading-7 text-gray-200 opacity-75">
-              create a chat with 2 people
+              create a chat with 2 people & Group
             </p>
+
             <div
               className="
                     relative
@@ -67,8 +91,7 @@ export default function CreateChat({ open, handleClose }: createGroupProps) {
                 register={register}
                 label=""
                 id="Search"
-                Disabled={isLoading}
-                required
+                // Disabled={isLoading}
                 errors={errors}
                 placeHolder="Search"
               />
@@ -100,7 +123,11 @@ export default function CreateChat({ open, handleClose }: createGroupProps) {
                       </p>
                     </div>
                     <div className=" text-green-400/70">
-                      <UserRoundPlus size={22} onClick={() => alert("Add Friend")} className=" hover:bg-icon-1 p-1 duration-300 rounded-sm "/>
+                      <UserRoundPlus
+                        size={22}
+                        onClick={() => alert("Add Friend")}
+                        className=" hover:bg-icon-1 p-1 duration-300 rounded-sm "
+                      />
                     </div>
                   </div>
                 </div>
@@ -111,5 +138,7 @@ export default function CreateChat({ open, handleClose }: createGroupProps) {
         </div>
       </form>
     </Model>
+    </>
+   
   );
 }

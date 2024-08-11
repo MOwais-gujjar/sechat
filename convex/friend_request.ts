@@ -48,12 +48,12 @@ export const create = mutation({
       throw new ConvexError("Request Already Received");
     }
     const contact1 = await ctx.db
-      .query("contact")
+      .query("contacts")
       .withIndex("by_user1", (q) => q.eq("user1", currentUser._id))
       .collect();
 
     const contact2 = await ctx.db
-      .query("contact")
+      .query("contacts")
       .withIndex("by_user2", (q) => q.eq("user2", currentUser._id))
       .collect();
 
@@ -126,7 +126,7 @@ export const accept = mutation({
       const conversationId = await ctx.db.insert('conversations', {
         isGroup: false
       })
-      await ctx.db.insert('contact', {
+      await ctx.db.insert('contacts', {
         user1: currentUser._id,
         user2: currentFriendRequest.sender,
         conversationId
