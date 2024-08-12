@@ -53,7 +53,7 @@ export const ChatHeader: FC<ChatHeaderProps> = ({
       className={cn(
         "fixed bg-dark-1 dark:bg-gray-800 px-10 pr-10 flex items-center justify-between space-x-3 z-30  top-0 w-full h-20"
       )}
-      style={isDesktop ? { width: `calc(1320px - ${sidebarWidth}%)` } : {}}
+      style={isDesktop ? { width: `calc(100% - ${sidebarWidth + 4}%)` } : {}}
     >
       <div className="flex space-x-3">
         <div className="md:hidden">

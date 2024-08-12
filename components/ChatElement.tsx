@@ -1,4 +1,4 @@
-import { cn } from "@/lib/utils";
+import { cn, getFormattedTimestamp} from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
 import React, { FC } from "react";
@@ -76,7 +76,7 @@ export const ChatElement: FC<ChatElementPrps> = ({
             variant={"default"}
             className=" text-[10px] font-light bg-icon-1/30 text-light-1 rounded"
           >
-            {timestamp || "09:12"}
+            {timestamp && getFormattedTimestamp(timestamp)}
           </Badge>
           <Badge
             className=" text-light-1 rounded-full px-2 py-1 opacity-70 bg-blue-1"

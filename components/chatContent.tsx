@@ -60,6 +60,7 @@ export const ChatContent: FC<{ chatId: Id<"conversations"> }> = ({
   };
 
   const { user } = useUser();
+  console.log("user id", user?.id, chatId)
   if (!conversation) return null;
 
   const chatAvatar = conversation.otherMember?.imageUrl || "";

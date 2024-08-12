@@ -8,13 +8,13 @@ import { Paperclip, Send, Smile } from "lucide-react";
 import { useTheme } from "next-themes";
 import data from "@emoji-mart/data";
 import TextareaAutoSize from "react-textarea-autosize";
-import { FilePond, registerPlugin } from 'react-filepond';
+import { FilePond, registerPlugin } from "react-filepond";
 import "filepond/dist/filepond.min.css";
-import FilePondPluginImagePreview from 'filepond-plugin-image-preview';
-import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type';
-import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css';
-import { v4 as uuid } from 'uuid';
-// import { AudioRecorder } from 'react-audio-voice-recorder';
+import FilePondPluginImagePreview from "filepond-plugin-image-preview";
+import FilePondPluginFileValidateType from "filepond-plugin-file-validate-type";
+import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css";
+import { v4 as uuid } from "uuid";
+import { AudioRecorder } from "react-audio-voice-recorder";
 import Pusher from "pusher-js";
 import axios from "axios";
 
@@ -39,7 +39,7 @@ import { api } from "@/convex/_generated/api";
 import { useIsDesktop } from "@/hooks/isDesktop";
 import { useSidebarWidth } from "@/hooks/side-Bar-Width";
 import Picker from "@emoji-mart/react";
-import { supabaseBrowserClient as supabase } from '@/supabase/supabaseClient';
+import { supabaseBrowserClient as supabase } from "@/supabase/supabaseClient";
 
 type ChatFooterProps = {
   chatId: string;
@@ -101,6 +101,7 @@ export const ChatFooter: FC<ChatFooterProps> = ({ chatId, currentUserId }) => {
         type: "text",
         content: [content],
       });
+      form.reset();
     } catch (error) {
       console.log(error);
       toast.error(
@@ -116,15 +117,14 @@ export const ChatFooter: FC<ChatFooterProps> = ({ chatId, currentUserId }) => {
 
     if (!typing) {
       setTyping(true);
-      await axios.post("/api/type-indicator", {
+      await axios.post("/api/hello", {
         channel: chatId,
         event: "typing",
         data: { isTyping: true, userId: currentUserId },
       });
-
-      setTimeout(() => {
+      setTimeout(async () => {
         setTyping(false);
-        axios.post("/api/type-indicator", {
+        await axios.post("/api/hello", {
           channel: chatId,
           event: "typing",
           data: { isTyping: false, userId: currentUserId },
@@ -152,12 +152,12 @@ export const ChatFooter: FC<ChatFooterProps> = ({ chatId, currentUserId }) => {
 
       const file = new File([imageOrPdf], fileName, { type: imageOrPdf.type });
 
-         const { data, error } = await supabase.storage
-         .from('sechat')
-           .upload(fileName, file, {
-             cacheControl: '3600',
-             upsert: false,
-           });
+      const { data, error } = await supabase.storage
+        .from("sechat")
+        .upload(fileName, file, {
+          cacheControl: "3600",
+          upsert: false,
+        });
 
       if (error) {
         console.log("Error uploading file: ", error);
@@ -167,7 +167,7 @@ export const ChatFooter: FC<ChatFooterProps> = ({ chatId, currentUserId }) => {
 
       const {
         data: { publicUrl },
-      } = await supabase.storage.from("sechat").getPublicUrl(data.path);
+      } = supabase.storage.from("sechat").getPublicUrl(data.path);
 
       await createMessage({
         conversationId: chatId,
@@ -189,7 +189,7 @@ export const ChatFooter: FC<ChatFooterProps> = ({ chatId, currentUserId }) => {
     try {
       const uniqueId = uuid();
 
-      const file = new File([blob], "adio.webm", { type: blob.type });
+      const file = new File([blob], "audio.webm", { type: blob.type });
       const fileName = `/audio-${uniqueId}`;
 
       const { data, error } = await supabase.storage
@@ -207,7 +207,7 @@ export const ChatFooter: FC<ChatFooterProps> = ({ chatId, currentUserId }) => {
 
       const {
         data: { publicUrl },
-      } = await supabase.storage.from("chat-files").getPublicUrl(data.path);
+      } = supabase.storage.from("chat-files").getPublicUrl(data.path);
 
       await createMessage({
         conversationId: chatId,
@@ -223,8 +223,10 @@ export const ChatFooter: FC<ChatFooterProps> = ({ chatId, currentUserId }) => {
   return (
     <Form {...form}>
       <form
-        style={isDesktop ? { width: `calc(1320px - ${sidebarWidth}%)` } : {}}
-        className="fixed px-3 md:pr-10 flex items-center justify-between space-x-3 z-30 bottom-0 w-full bg-white dark:bg-gray-800 h-20"
+        style={
+          isDesktop ? { width: `calc(1320px - ${sidebarWidth + 6}%)` } : {}
+        }
+        className="fixed px-3 pr-10 flex items-center justify-between space-x-3 z-30 bottom-0 w-full bg-white dark:bg-gray-800 h-20"
         onSubmit={form.handleSubmit(createMessagehandler)}
       >
         <Popover>
@@ -276,7 +278,7 @@ export const ChatFooter: FC<ChatFooterProps> = ({ chatId, currentUserId }) => {
 
         <Send
           className="cursor-pointer"
-          onClick={async () => form.handleSubmit(createMessagehandler)()}
+          onSubmit={async () => form.handleSubmit(createMessagehandler)()}
         />
 
         <Dialog
@@ -294,12 +296,12 @@ export const ChatFooter: FC<ChatFooterProps> = ({ chatId, currentUserId }) => {
             </DialogHeader>
 
             <FilePond
-              className='cursor-pointer'
+              className="cursor-pointer"
               files={imageOrPdf ? [imageOrPdf] : []}
               allowMultiple={false}
-              acceptedFileTypes={['image/*', 'application/pdf']}
+              acceptedFileTypes={["image/*", "application/pdf"]}
               labelIdle='Drag & Drop your files or <span class="filepond--label-action">Browse</span>'
-              onupdatefiles={fileItems => {
+              onupdatefiles={(fileItems) => {
                 setImageOrPdf(fileItems[0]?.file ?? null);
               }}
             />
@@ -316,16 +318,16 @@ export const ChatFooter: FC<ChatFooterProps> = ({ chatId, currentUserId }) => {
           </DialogContent>
         </Dialog>
 
-        {/* {isDesktop && (
+        {isDesktop && (
           <AudioRecorder
             onRecordingComplete={addAudioElement}
             audioTrackConstraints={{
               noiseSuppression: true,
               echoCancellation: true,
             }}
-            downloadFileExtension='webm'
+            downloadFileExtension="webm"
           />
-        )} */}
+        )}
       </form>
     </Form>
   );

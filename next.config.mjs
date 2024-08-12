@@ -10,7 +10,13 @@ const nextConfig = {
             },
             {
                 hostname: "standing-emu-103.convex.cloud"
+            },
+            {
+                protocol: 'https',
+                hostname: "zxglejitebeelfhtrqid.supabase.co"
             }
+
+            
           ],
     }
 };
