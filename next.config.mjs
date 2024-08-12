@@ -8,6 +8,9 @@ const nextConfig = {
                 protocol: "https",
                 hostname: "img.clerk.com",
             },
+            {
+                hostname: "standing-emu-103.convex.cloud"
+            }
           ],
     }
 };

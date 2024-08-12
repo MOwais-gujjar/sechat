@@ -5,9 +5,9 @@ import { ConvexError } from "convex/values";
 import { Handshake, X } from "lucide-react";
 import React, { FC } from "react";
 import { toast } from "sonner";
-import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
-import { Switch } from "./ui/switch";
-import { Button } from "./ui/button";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Switch } from "@/components/ui/switch";
+import { Button } from "@/components/ui/button";
 
 interface FriendRequestCardProps {
   email: string;
@@ -16,7 +16,7 @@ interface FriendRequestCardProps {
   id: Id<"friend_requests">;
   key: any;
 }
-const FriendRequestCard: FC<FriendRequestCardProps> = ({
+export const FriendRequestCard: FC<FriendRequestCardProps> = ({
   email,
   imageUrl,
   username,
@@ -90,5 +90,3 @@ const FriendRequestCard: FC<FriendRequestCardProps> = ({
     </div>
   );
 };
-
-export default FriendRequestCard;

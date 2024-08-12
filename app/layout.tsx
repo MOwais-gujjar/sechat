@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import ReduxProvider from "@/components/ReduxProvider";
+
 import ConvexClientProvider from "@/provider/clerk-convex-provider";
+import { ThemeProvider } from "@/provider/Theme-Providers";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Toaster } from "@/components/ui/sonner";
 
@@ -22,11 +23,17 @@ export default function RootLayout({
     <html lang="en" className=" bg-gray-900 text-gray-100">
       <body className={inter.className}>
         <ConvexClientProvider>
-          <ReduxProvider>
-            <TooltipProvider>{children}
-              <Toaster />
-            </TooltipProvider>
-          </ReduxProvider>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+              <TooltipProvider>
+                <main>{children}</main>
+                <Toaster />
+              </TooltipProvider>
+          </ThemeProvider>
         </ConvexClientProvider>
       </body>
     </html>

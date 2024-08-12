@@ -1,5 +1,5 @@
 import { ConvexError } from 'convex/values';
-import { MutationCtx, query, QueryCtx } from './_generated/server';
+import { mutation, MutationCtx, query, QueryCtx } from './_generated/server';
 import { getUserDataById } from './_utils';
 import { Id } from './_generated/dataModel';
 
@@ -140,3 +140,7 @@ const getMessageContent = (type: string, content: any) => {
       return 'Unsupported message type';
   }
 };
+
+export const generateUploadUrl = mutation(async (ctx) => {
+	return await ctx.storage.generateUploadUrl();
+});

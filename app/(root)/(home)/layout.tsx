@@ -1,17 +1,20 @@
-import Sidebar from '@/components/Sidebar'
-import React, { ReactNode } from "react";
+import { ChatsLayout } from '@/components/Chat-Layout';
+import { FC, ReactNode } from 'react';
 
-const Rootlayout = ({ children }: { children: ReactNode }) => {
+
+type LayoutProps = {
+  children: ReactNode;
+};
+
+const Layout: FC<LayoutProps> = ({ children }) => {
   return (
-    <main className=" relative">
-      <div className=" flex">
-        <Sidebar />
-        <section className=" flex min-h-screen flex-1">
-          <div className=" w-full">{children}</div>
-        </section>
+    <>
+      <div className='hidden md:flex md:ml-24 px-2 md:px-0 h-dvh'>
+        <ChatsLayout>{children}</ChatsLayout>
       </div>
-    </main>
+      <div className='md:hidden my-20 md:px-2'>{children}</div>
+    </>
   );
 };
 
-export default Rootlayout;
+export default Layout;
