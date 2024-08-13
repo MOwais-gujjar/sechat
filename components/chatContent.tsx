@@ -10,6 +10,7 @@ import { useQuery } from "convex/react";
 import { ChatHeader } from "@/components/chatHeader";
 import { MessageItem } from "@/components/Message-Item";
 import { ChatFooter } from "@/components/Chat-footer";
+import { ScrollArea } from "./ui/scroll-area";
 
 export const ChatContent: FC<{ chatId: Id<"conversations"> }> = ({
   chatId,
@@ -88,7 +89,8 @@ export const ChatContent: FC<{ chatId: Id<"conversations"> }> = ({
         />
 
         
-        <div className="p-3 flex flex-1 flex-col-reverse gap-2">
+        <ScrollArea className="p-3 flex flex-1 ">
+          <div className="p-3 flex flex-col-reverse gap-2 ">
           {messages?.map((message, index) => (
             <MessageItem
               key={message._id}
@@ -104,7 +106,8 @@ export const ChatContent: FC<{ chatId: Id<"conversations"> }> = ({
               }
             />
           ))}
-        </div>
+          </div>
+        </ScrollArea>
 
         <ChatFooter chatId={chatId} currentUserId={user?.id!} />
       </div>

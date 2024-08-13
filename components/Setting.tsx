@@ -4,7 +4,7 @@ import { useState } from "react";
 import z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { UserButton } from "@clerk/nextjs";
+import { SignInButton, UserButton, UserProfile } from "@clerk/nextjs";
 
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
@@ -39,6 +39,7 @@ import {
   Pencil,
   Sun,
   SunMoon,
+  User,
   UserRound,
   UserRoundSearch,
 } from "lucide-react";
@@ -61,6 +62,7 @@ export function Setting() {
   const [updateStatusDialog, setUpdateStatusDialog] = useState(false);
   const [status, setStatus] = useState("");
   const [friendReqestModal, setFriendRequestModal] = useState(false);
+  const [showUserButton, setShowSignInButton] = useState(true);
 
   const user = useQuery(api.users.getMe || "skip");
 
@@ -112,6 +114,10 @@ export function Setting() {
     }
   }
 
+  const toggleSignInButtonVisibility = () => {
+    setShowSignInButton(!showUserButton);
+  };
+
   return (
     <>
       <h1 className=" text-lg font-semibold text-light-1"> Profile </h1>
@@ -133,15 +139,30 @@ export function Setting() {
           <Separator className=" opacity-10" />
           <div className="flex items-center justify-center space-x-5">
             <p>Manage your account</p>
-            <UserButton
-              appearance={{
-                elements: {
-                  userButtonPopoverCard: {
-                    pointerEvents: "initial",
+
+            <Dialog
+              open={showUserButton}
+              onOpenChange={() => setShowSignInButton(!showUserButton)}
+            >
+              <DialogTrigger>
+                <div className="flex items-center space-x-2">
+                  <User />
+                </div>
+              </DialogTrigger>
+              <DialogContent>
+                <UserProfile appearance={{
+                  elements: {
+                    userButtonPopoverCard: {
+                      pointerEvents: 'initial',
+                      color: "darkblue",
+                      width: 100,
+                      height: 100
+                    },
                   },
-                },
-              }}
-            />
+                }}
+                />
+              </DialogContent>
+            </Dialog>
           </div>
           <Separator className=" opacity-10" />
           <Dialog
@@ -270,7 +291,7 @@ export function Setting() {
           <Separator className=" opacity-10" />
           <ToggleGroup type="single" variant="outline">
             <ToggleGroupItem
-             onClick={() => setTheme('light')}
+              onClick={() => setTheme("light")}
               value="light"
               className="flex space-x-3"
             >
@@ -278,7 +299,7 @@ export function Setting() {
               <p>Light</p>
             </ToggleGroupItem>
             <ToggleGroupItem
-              onClick={() => setTheme('dark')}
+              onClick={() => setTheme("dark")}
               value="dark"
               className="flex space-x-3"
             >
@@ -286,7 +307,7 @@ export function Setting() {
               <p>Dark</p>
             </ToggleGroupItem>
             <ToggleGroupItem
-              onClick={() => setTheme('system')}
+              onClick={() => setTheme("system")}
               value="system"
               className="flex space-x-3"
             >

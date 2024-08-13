@@ -207,7 +207,7 @@ export const ChatFooter: FC<ChatFooterProps> = ({ chatId, currentUserId }) => {
 
       const {
         data: { publicUrl },
-      } = supabase.storage.from("chat-files").getPublicUrl(data.path);
+      } = supabase.storage.from("sechat").getPublicUrl(data.path);
 
       await createMessage({
         conversationId: chatId,
@@ -224,7 +224,7 @@ export const ChatFooter: FC<ChatFooterProps> = ({ chatId, currentUserId }) => {
     <Form {...form}>
       <form
         style={
-          isDesktop ? { width: `calc(1320px - ${sidebarWidth + 6}%)` } : {}
+          isDesktop ? { width: `calc(100% - ${sidebarWidth + 6}%)` } : {}
         }
         className="fixed px-3 pr-10 flex items-center justify-between space-x-3 z-30 bottom-0 w-full bg-white dark:bg-gray-800 h-20"
         onSubmit={form.handleSubmit(createMessagehandler)}

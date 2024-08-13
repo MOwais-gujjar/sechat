@@ -67,3 +67,25 @@
     @apply bg-background text-foreground;
   }
 }
+
+.cl-internal-1dauvpw{
+  display: none;
+}
+
+.cl-internal-1c61r6f{
+  width: 700px;
+  height: 370px;
+  background: gray;
+}
+.cl-pageScrollBox{
+  padding: 10px;
+}
+
+.cl-profileSection{
+  display: flex;
+  gap: 3px;
+}
+
+.dev-banner p{
+  display: none;
+}
