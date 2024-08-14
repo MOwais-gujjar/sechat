@@ -68,7 +68,7 @@ export const ChatElement: FC<ChatElementPrps> = ({
             {name.slice(0, 10)}
           </h1>
           <p className="mt-1 text-[10px] text-gray-400">
-            {lastMessageContent || "Unset"}
+            {lastMessageContent!}
           </p>
         </div>
         <div className="flex flex-col items-center gap-y-2 mr-2 my-2 w-10">

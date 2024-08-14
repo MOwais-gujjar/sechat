@@ -121,8 +121,6 @@ export const GroupSheet: FC<GroupSheetProps> = ({ groupName, chatId, groupImage,
                   <AvatarFallback>{member.username[0]}</AvatarFallback>
                 </Avatar>
                 <p>{member.username}</p>
-                <p>{admin}</p>
-
               </div>
             </div>
           ))}

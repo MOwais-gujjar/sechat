@@ -57,7 +57,6 @@ export const ChatBox = ({ onUserClick }: any) => {
                     <div
                       key={conversation._id}
                       className=" flex flex-col gap-y-10 mr-5"
-                      onClick={onUserClick}
                     >
                       <ChatElement
                         name={conversation.name || ""}
