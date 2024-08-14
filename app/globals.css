@@ -68,24 +68,25 @@
   }
 }
 
-.cl-internal-1dauvpw{
+.cl-internal-cwb4nf {
+  width: 450px;
+  height: 380px;
+}
+
+.cl-profileSectionPrimaryButton {
+  background-color: white;
+  color: black;
+  box-shadow: none;
+  &:hover{
+    background-color: #f0f0f0;
+    color: black;
+    opacity: 80%;
+  }
+}
+.cl-internal-1efiaa8{
   display: none;
 }
 
-.cl-internal-1c61r6f{
-  width: 700px;
-  height: 370px;
-  background: gray;
-}
-.cl-pageScrollBox{
-  padding: 10px;
-}
-
-.cl-profileSection{
-  display: flex;
-  gap: 3px;
-}
-
-.dev-banner p{
-  display: none;
+.cl-internal-cd7qq7{
+width: fit-content
 }

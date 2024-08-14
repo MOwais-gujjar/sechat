@@ -62,7 +62,7 @@ export function Setting() {
   const [updateStatusDialog, setUpdateStatusDialog] = useState(false);
   const [status, setStatus] = useState("");
   const [friendReqestModal, setFriendRequestModal] = useState(false);
-  const [showUserButton, setShowSignInButton] = useState(true);
+  const [showUserButton, setShowSignInButton] = useState(false);
 
   const user = useQuery(api.users.getMe || "skip");
 
@@ -139,7 +139,6 @@ export function Setting() {
           <Separator className=" opacity-10" />
           <div className="flex items-center justify-center space-x-5">
             <p>Manage your account</p>
-
             <Dialog
               open={showUserButton}
               onOpenChange={() => setShowSignInButton(!showUserButton)}
@@ -150,17 +149,15 @@ export function Setting() {
                 </div>
               </DialogTrigger>
               <DialogContent>
-                <UserProfile appearance={{
-                  elements: {
-                    userButtonPopoverCard: {
-                      pointerEvents: 'initial',
-                      color: "darkblue",
-                      width: 100,
-                      height: 100
-                    },
-                  },
-                }}
-                />
+                  <UserProfile
+                    appearance={{
+                      elements: {
+                        userButtonPopoverCard: {
+                          pointerEvents: "initial",
+                        },
+                      },
+                    }}
+                  />
               </DialogContent>
             </Dialog>
           </div>
