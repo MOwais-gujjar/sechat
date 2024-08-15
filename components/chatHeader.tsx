@@ -16,6 +16,7 @@ import { api } from "@/convex/_generated/api";
 import { useSidebarWidth } from "@/hooks/side-Bar-Width";
 import { ProfileSheet } from "./profile-sheet";
 import { GroupSheet } from "./Group-Sheet";
+import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
 
 type ChatHeaderProps = {
   chatAvatar: string;
@@ -43,8 +44,7 @@ export const ChatHeader: FC<ChatHeaderProps> = ({
 
   const groupsInCommon = conversations?.filter(
     ({ conversation }: any) => conversation.isGroup
-  )
-
+  );
 
   const videoCall = () => router.push(`/calls/${chatId}`);
 
@@ -77,7 +77,7 @@ export const ChatHeader: FC<ChatHeaderProps> = ({
               <>
                 <Avatar>
                   <AvatarImage src={chatAvatar} />
-                  <AvatarFallback>{''}</AvatarFallback>
+                  <AvatarFallback>{""}</AvatarFallback>
                 </Avatar>
                 <h2 className="font-bold text-lg">{username}</h2>
               </>
@@ -106,8 +106,18 @@ export const ChatHeader: FC<ChatHeaderProps> = ({
       </div>
 
       <div className="flex items-center space-x-6">
-        <Video className="cursor-pointer" onClick={videoCall} />
-        <Phone className="cursor-pointer" onClick={videoCall} />
+        <Tooltip>
+          <TooltipTrigger>
+            <Video className="cursor-pointer" onClick={() => videoCall} />
+          </TooltipTrigger>
+          <TooltipContent>Video Call</TooltipContent>
+        </Tooltip>
+        <Tooltip>
+          <TooltipTrigger>
+            <Phone className="cursor-pointer" onClick={videoCall} />
+          </TooltipTrigger>
+          <TooltipContent>Audeo Call</TooltipContent>
+        </Tooltip>
       </div>
     </div>
   );
