@@ -41,7 +41,6 @@
     "emoji-picker-react": "^4.10.0",
     "filepond-plugin-file-validate-type": "^1.2.9",
     "filepond-plugin-image-preview": "^4.6.12",
-    "gun": "^0.2020.1240",
     "livekit-server-sdk": "^2.6.0",
     "lucide-react": "^0.381.0",
     "next": "14.2.3",
@@ -66,7 +65,6 @@
     "tailwindcss-animate": "^1.0.7",
     "uuid": "^10.0.0",
     "vaul": "^0.9.1",
-    "ws": "^8.18.0",
     "yup": "^1.4.0",
     "zod": "^3.23.8",
     "zustand": "^4.5.4"

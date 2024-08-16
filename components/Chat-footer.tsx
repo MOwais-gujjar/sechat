@@ -1,3 +1,5 @@
+"use client"
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ConvexError } from "convex/values";
 import { ChangeEvent, FC, useEffect, useState } from "react";
@@ -65,6 +67,7 @@ export const ChatFooter: FC<ChatFooterProps> = ({ chatId, currentUserId }) => {
   const [imageOrPdf, setImageOrPdf] = useState<Blob | null>(null);
   const [imageOrPdfModalOpen, setImageOrPdfModalOpen] = useState(false);
   const [sendingFile, setSendingFile] = useState(false);
+
 
   registerPlugin(FilePondPluginImagePreview, FilePondPluginFileValidateType);
 
@@ -223,9 +226,7 @@ export const ChatFooter: FC<ChatFooterProps> = ({ chatId, currentUserId }) => {
   return (
     <Form {...form}>
       <form
-        style={
-          isDesktop ? { width: `calc(100% - ${sidebarWidth + 6}%)` } : {}
-        }
+        style={isDesktop ? { width: `calc(100% - ${sidebarWidth + 6}%)` } : {}}
         className="fixed px-3 pr-10 flex items-center justify-between space-x-3 z-30 bottom-0 w-full bg-white dark:bg-gray-800 h-20"
         onSubmit={form.handleSubmit(createMessagehandler)}
       >
